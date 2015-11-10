@@ -55,9 +55,12 @@ function cargarDatosPersonales(){
 								var span = document.createElement("span");
 								span.setAttribute("id", "anuncio" + anuncios[cont].idAnuncio);
 								span.setAttribute("class", "spanAnuncio");
-								var etiquetaDescripcion=document.createElement("label");
-								etiquetaDescripcion.innerHTML=anuncios[cont].descripcion;
-								span.appendChild(etiquetaDescripcion);
+								var enlace=document.createElement("a");
+								enlace.setAttribute("href", "javascript:cargarGestionAnuncio()");
+								enlace.innerHTML=anuncios[cont].descripcion;
+								//var etiquetaDescripcion=document.createElement("label");
+								//etiquetaDescripcion.innerHTML=anuncios[cont].descripcion;
+								span.appendChild(enlace);
 								celda.appendChild(span);
 								cont++;
 							}
@@ -72,6 +75,10 @@ function cargarDatosPersonales(){
 		}
 	};
 	req.send();
+}
+
+function cargarGestionAnuncio(){
+	$('#areaPrincipal').load('FormGestionarAnuncio.html');
 }
 
 function volver(){
