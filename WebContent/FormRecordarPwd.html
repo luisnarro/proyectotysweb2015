@@ -1,0 +1,29 @@
+<label>email</label><input type="email" size="30" maxlength="40" id="email"><br>
+<script>
+
+function recordar(){
+	//llamar a la acción "RecordarPwd.java"
+	var req = new XMLHttpRequest();
+	req.open("POST", "RecordarPwd.action")
+	req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	req.onreadystatechange=function(){
+		if (req.readyState==4) {
+			if (req.status==200){
+				var respuesta = req.responseText;
+				respuesta = JSON.parse(respuesta);
+				alert(respuesta);
+			}else {
+				alert("Error. "+ request.statusText);
+			}
+		}
+	};
+	
+	var email = document.getElementById("email").value;
+	
+	var pars = "email="+email;
+	var uri = encodeURI(pars);
+	req.send(uri);
+}
+
+</script>
+<button type="submit" onclick="recordar()">Recordar Contraseña</button>
