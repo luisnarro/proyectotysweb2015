@@ -1,10 +1,9 @@
 package edu.uclm.esi.tysweb2015.acciones;
 
 import org.apache.struts2.ServletActionContext;
-
+import edu.uclm.esi.tysweb2015.dominio.Anuncio;
 import edu.uclm.esi.tysweb2015.dominio.Gestor;
 import edu.uclm.esi.tysweb2015.dominio.Usuario;
-
 import com.opensymphony.xwork2.ActionSupport;
 
 public class NuevoAnuncio {
@@ -17,7 +16,8 @@ public class NuevoAnuncio {
 			Usuario usuario = (Usuario) ServletActionContext.getRequest().getSession().getAttribute("usuario");
 			int idAnunciante = usuario.getIdUusuario();
 			Gestor gestor=Gestor.get();
-			gestor.nuevoAnuncio(descripcion, categoria, idAnunciante);
+			Anuncio anuncio = gestor.nuevoAnuncio(descripcion, categoria, idAnunciante);
+			usuario.setAnuncio(anuncio);
 			this.resultado="OK";
 			return ActionSupport.SUCCESS;
 		} catch (Exception e) {

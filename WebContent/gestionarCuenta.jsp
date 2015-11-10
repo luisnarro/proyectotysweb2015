@@ -13,6 +13,7 @@
 		jso.put("apellido2", usuario.getApellido2());
 		jso.put("telefono", usuario.getTelefono());
 		jso.put("email", usuario.getEmail());
+		jso.put("anuncios", usuario.getAnuncios());
 	}else{
 		jso.put("resultado", "Error");
 	}

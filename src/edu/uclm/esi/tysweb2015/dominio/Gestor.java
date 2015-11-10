@@ -29,10 +29,11 @@ public class Gestor {
 		return usuario;
 	}
 
-	public void nuevoAnuncio(String descripcion, int idCategoria,
+	public Anuncio nuevoAnuncio(String descripcion, int idCategoria,
 			int idAnunciante) throws SQLException, Exception {
 		Anuncio anuncio = new Anuncio(descripcion, idCategoria, idAnunciante);
-		anuncio.insert();		
+		anuncio.insert();
+		return anuncio;
 	}
 
 	public void recuperarAunucios(Usuario usuario) throws SQLException, Exception {
