@@ -1,0 +1,46 @@
+package edu.uclm.esi.tysweb2015.acciones;
+
+import org.apache.struts2.ServletActionContext;
+
+import edu.uclm.esi.tysweb2015.dominio.Gestor;
+import edu.uclm.esi.tysweb2015.dominio.Usuario;
+
+import com.opensymphony.xwork2.ActionSupport;
+
+public class NuevoAnuncio {
+	private String descripcion;
+	private int categoria;
+	private String resultado;
+	
+	public String execute() {
+		try {
+			Usuario usuario = (Usuario) ServletActionContext.getRequest().getSession().getAttribute("usuario");
+			int idAnunciante = usuario.getIdUusuario();
+			Gestor gestor=Gestor.get();
+			gestor.nuevoAnuncio(descripcion, categoria, idAnunciante);
+			this.resultado="OK";
+			return ActionSupport.SUCCESS;
+		} catch (Exception e) {
+			this.resultado=e.getMessage();
+			return ActionSupport.ERROR;
+		}
+	}
+	
+	/*public JSONObject getResultado() throws JSONException{
+		JSONObject jso = new JSONObject();
+		jso.put("mensaje", this.resultado);
+		return jso;
+	}*/
+	
+	public String getResultado(){
+		return this.resultado;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+	public void setCategoria(int categoria) {
+		this.categoria = categoria;
+	}
+}

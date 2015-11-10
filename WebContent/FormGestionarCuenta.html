@@ -1,0 +1,54 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<p>
+	<h2>Cuenta</h2>
+</p>
+<label>email</label><input type="email" size="30" maxlength="40" id="useremail"><br>
+<label>Nombre</label><input type="text" size="30" maxlength="40" id="nombre"><br>
+<label>Apellido1</label><input type="text" size="30" maxlength="40" id="apellido1"><br>
+<label>Apellido2</label><input type="text" size="30" maxlength="40" id="apellido2"><br>
+<label>Teléfono</label><input type="tel" size="30" maxlength="40" id="telefono"><br>
+<p>
+	<h2>Anuncios</h2>
+</p>
+
+<script>
+$(document).ready(function() {
+	$('#nuevoAnuncio').click(function() {
+		$('#areaPrincipal').load('FormNuevoAnuncio.html');
+    });
+	cargarDatosPersonales();
+})
+
+function cargarDatosPersonales(){
+	var req = new XMLHttpRequest();
+	req.open("GET", "gestionarCuenta.jsp")
+	req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	req.onreadystatechange=function(){
+		if (req.readyState==4) {
+			if (req.status==200){
+				var respuesta = req.responseText;
+				respuesta = JSON.parse(respuesta);
+				if (respuesta.resultado=="OK"){
+					//Poner la información del usuario en los cuadros de texto
+					document.getElementById("useremail").value = respuesta.email;
+					document.getElementById("nombre").value = respuesta.nombre;
+					document.getElementById("apellido1").value = respuesta.apellido1;
+					document.getElementById("apellido2").value = respuesta.apellido2;
+					document.getElementById("telefono").value = respuesta.telefono;
+				} else {
+					alert(respuesta.resultado);
+				}
+			}else {
+				alert("Error. "+ req.statusText);
+			}
+		}
+	};
+	req.send();
+}
+
+function volver(){
+	window.location = "index.html";
+}
+</script>
+<p><button type="submit" id="nuevoAnuncio">Nuevo Anuncio</button></p>
+<p><button type="submit" onclick="volver()">Volver</button></p>

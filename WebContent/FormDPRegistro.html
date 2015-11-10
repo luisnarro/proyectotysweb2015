@@ -1,0 +1,128 @@
+<label>email</label><input type="email" size="30" maxlength="40" id="email"><br>
+<label>Nombre</label><input type="text" size="30" maxlength="40" id="nombre"><br>
+<label>Apellido1</label><input type="text" size="30" maxlength="40" id="apellido1"><br>
+<label>Apellido2</label><input type="text" size="30" maxlength="40" id="apellido2"><br>
+<label>Teléfono</label><input type="tel" size="30" maxlength="40" id="telefono"><br>
+
+<label>Password</label><input type="password" size="30" maxlength="40" id="pwd1"><br>
+<label>Confirma</label><input type="password" size="30" maxlength="40" id="pwd2"><br>
+
+<p>
+	<label for="selectCCAA">Comunidad autónoma:</label>
+	<select id="selectCCAA" onchange="cargarProvincias()">
+		<option>  </option>
+	</select>
+</p>
+
+<p>
+	<label for="selectProvincias">Provincia:</label>
+	<select id="selectProvincias" onchange="cargarMunicipios()"></select>
+</p>
+
+<p>
+	<label for="selectMunicipios">Municipio:</label>
+	<select id="selectMunicipios"></select>
+</p>
+
+<script>
+function registrar(){
+	var req = new XMLHttpRequest();
+	req.open("POST", "Register.action")
+	req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	req.onreadystatechange=function(){
+		if (req.readyState==4) {
+			if (req.status==200){
+				var respuesta = req.responseText;
+				respuesta = JSON.parse(respuesta);
+				alert(respuesta.resultado);
+			}else {
+				alert("Error. "+ request.statusText);
+			}
+		}
+	};
+	
+	var email = document.getElementById("email").value;
+	var nombre = document.getElementById("nombre").value;
+	var apellido1 = document.getElementById("apellido1").value;
+	var apellido2 = document.getElementById("apellido2").value;
+	var telefono = document.getElementById("telefono").value;
+	var pwd1 = document.getElementById("pwd1").value;
+	var pwd2 = document.getElementById("pwd2").value;
+	var ubicacion = document.getElementById("selectMunicipios").value;
+	
+	var pars = "email="+email+"&nombre="+nombre+"&apellido1="+apellido1+"&apellido2="+apellido2+"&telefono="+telefono+"&pwd1="+pwd1+"&pwd2="+pwd2+"&ubicacion="+ubicacion;
+	var uri = encodeURI(pars);
+	req.send(uri);
+}
+
+function cargarMunicipios() {
+	var request = new XMLHttpRequest();
+	request.open("POST", "cargarMunicipios.jsp")
+	request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	var parm = "Provincia=" + document.getElementById("selectProvincias").value;
+	request.onreadystatechange=function(){
+		if (request.readyState==4) {
+			if (request.status==200){
+				var select = document.getElementById("selectMunicipios");
+				var municipios = JSON.parse(request.responseText);
+				select.innerHTML="";
+				for (var i=0; i<municipios.length; i++) {
+					var option=document.createElement("option");
+					option.setAttribute("value", municipios[i].id);
+					option.innerHTML=municipios[i].nombre;
+					select.appendChild(option);
+				}
+			}else {
+				alert("Error. "+ request.statusText);
+			}
+		}
+	};
+	request.send(parm);
+}
+function cargarProvincias() {
+	var request = new XMLHttpRequest();
+	request.open("POST", "cargarProvincias.jsp")
+	request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	var parm = "comunidad=" + document.getElementById("selectCCAA").value;
+	request.onreadystatechange=function(){
+		if (request.readyState==4) {
+			if (request.status==200){
+				var provincias = JSON.parse(request.responseText);
+				for (var i=0; i<provincias.length; i++) {
+					var option=document.createElement("option");
+					option.setAttribute("value", provincias[i].id);
+					option.innerHTML=provincias[i].nombre;
+					var select = document.getElementById("selectProvincias");
+					select.appendChild(option);
+				}
+			}else {
+				alert("Error. "+ request.statusText);
+			}
+		}
+	};
+	request.send(parm);
+}
+
+var request = new XMLHttpRequest();
+request.open("GET", "cargarCCAA.jsp");
+request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+request.onreadystatechange=function(){
+	if (request.readyState==4){
+		if (request.status==200) {
+			var respuesta = JSON.parse(request.responseText);
+			for (var i=0; i<respuesta.length; i++){
+				var option=document.createElement("option");
+				option.setAttribute("value", respuesta[i].id);
+				option.innerHTML=respuesta[i].nombre;
+				var select = document.getElementById("selectCCAA");
+				select.appendChild(option);
+			}
+		}else{
+			alert("Error. "+request.statusText);
+		}
+	}
+};
+request.send();
+</script>
+
+<button type="submit" onclick="registrar()">Crear cuenta</button>

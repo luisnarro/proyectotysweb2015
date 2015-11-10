@@ -1,0 +1,52 @@
+<span id="conectadoComo">Conectado como </span>
+<a id="email" href="javascript:gestionarCuenta()"></a>
+<br>
+<button id="desconectar" type="button" onclick="desconectar()">Desconectar</button>
+
+<script >
+document.getElementById("email").innerHTML = sessionStorage.getItem("email");
+
+function desconectar(){
+	var req = new XMLHttpRequest();
+	req.open("GET", "desconectar.jsp")
+	req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	req.onreadystatechange=function(){
+		if (req.readyState==4) {
+			if (req.status==200){
+				sessionStorage.removeItem("email");
+				$('#datosPersonales').load('FormDPDesconectado.html');
+				$('#areaPrincipal').empty();
+			}else {
+				alert("Error. "+ request.statusText);
+			}
+		}
+	};
+	req.send();
+}
+
+function gestionarCuenta(){
+	$('#areaPrincipal').load('FormGestionarCuenta.html');
+}
+</script>
+
+<!-- 
+<script>
+
+var req = new XMLHttpRequest();
+req.open("GET", "dameEmail.jsp")
+req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+req.onreadystatechange=function(){
+	if (req.readyState==4) {
+		if (req.status==200){
+			var respuesta = req.responseText;
+			respuesta = JSON.parse(respuesta);
+			document.getElementById("email").innerHTML=respuesta.email;
+		}else {
+			alert("Error. "+ request.statusText);
+		}
+	}
+};
+
+req.send();
+</script>
+ -->

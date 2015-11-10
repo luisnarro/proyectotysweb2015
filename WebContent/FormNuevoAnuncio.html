@@ -1,0 +1,60 @@
+<p>
+	<h2>Nuevo Anuncio</h2>
+</p>
+<p>
+	<label>Descripción</label><textarea cols="30" rows="5" id="descripcion"></textarea><br>
+</p>
+<p>
+	<label for="selectCategoria">Categoría:</label>
+	<select id="selectCategoria">
+		<option>	</option>
+	</select>
+</p>
+
+<script>
+var request = new XMLHttpRequest();
+request.open("GET", "getCategorias.jsp");
+request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+request.onreadystatechange=function(){
+	if (request.readyState==4){
+		if (request.status==200) {
+			var respuesta = JSON.parse(request.responseText);
+			for (var i=0; i<respuesta.length; i++){
+				var option=document.createElement("option");
+				option.setAttribute("value", respuesta[i].id);
+				option.innerHTML=respuesta[i].nombre;
+				var select = document.getElementById("selectCategoria");
+				select.appendChild(option);
+			}
+		}else{
+			alert("Error. "+request.statusText);
+		}
+	}
+};
+request.send();
+
+function insertarAnuncio(){
+	var req = new XMLHttpRequest();
+	req.open("POST", "NuevoAnuncio.action")
+	req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	req.onreadystatechange=function(){
+		if (req.readyState==4) {
+			if (req.status==200){
+				var respuesta = req.responseText;
+				respuesta = JSON.parse(respuesta);
+				alert(respuesta.resultado);
+			}else {
+				alert("Error. "+ request.statusText);
+			}
+		}
+	};
+	
+	var descripcion = document.getElementById("descripcion").value;
+	var categoria = document.getElementById("selectCategoria").value;
+	
+	var pars = "descripcion="+descripcion+"&categoria="+categoria
+	var uri = encodeURI(pars);
+	req.send(uri);
+}
+</script>
+<button type="submit" onclick="insertarAnuncio()">Publicar</button>

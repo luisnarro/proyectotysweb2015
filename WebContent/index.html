@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Publianuncios</title>
+<style type="text/css">	
+	.celdaRoja{
+		color: red;
+	}
+	.spanAnuncio{
+		background-color: grey;
+		color: white;
+	}
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script>
+	$(document).ready(function() {
+		if(sessionStorage.getItem("email")){
+			$('#datosPersonales').load('FormDPSesion.html');
+		}else{
+			$('#datosPersonales').load('FormDPDesconectado.html');
+		}
+	})
+</script>
+
+</head>
+<body>
+	<table border="1">
+		<tr class="celdaRoja">
+			<td>
+				<span id="areaEmpresa">Publianuncios.com</span>
+			</td>
+			<td>
+				<span id="areaBusqueda">Área de búsqueda</span>
+			</td>
+			<td colspan="2">
+				<span id="datosPersonales">Datos</span>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<span id="areaArbol"></span>
+			</td>
+			<td colspan="3">
+				<span id="areaPrincipal">Esta es el área principal</span>
+			</td>
+		</tr>
+		<tr class="celdaRoja"	>
+			<td>
+				<span id="areaTerminosDeUso">Terminos de uso</span>
+			</td>
+			<td>
+				<span id="areaCookies">Política de cookies</span>
+			</td>
+			<td>
+				<span id="areaQuienesSomos">Quienes Somos</span>
+			</td>
+			<td>
+				<span id="area">Área</span>
+			</td>
+		</tr>
+	</table>
+	
+	<script>
+		var request = new XMLHttpRequest();
+		request.open("GET", "getCategorias.jsp");
+		request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		request.onreadystatechange=function(){
+			if (request.readyState==4){
+				if (request.status==200) {
+					var respuesta = JSON.parse(request.responseText);
+					var arbol = document.getElementById("areaArbol");
+					var ul = document.createElement("ul");
+					for (var i=0; i<respuesta.length; i++){
+						var li=document.createElement("li");
+						li.setAttribute("value", respuesta[i].id);
+						var enlace=document.createElement("a");
+						enlace.setAttribute("href", "javascript:cargarAnuncios("+ respuesta[i].id+")");
+						enlace.innerHTML=respuesta[i].nombre;
+						li.appendChild(enlace);
+						ul.appendChild(li);
+					}
+					arbol.appendChild(ul);
+				}else{
+					alert("Error. "+request.statusText);
+				}
+			}
+		};
+		request.send();
+		
+		var anuncios=[];
+		function cargarAnuncios(idCategoria){
+			var request = new XMLHttpRequest();
+			request.open("POST", "getAnuncios.jsp");
+			request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+			request.onreadystatechange=function(){
+				if (request.readyState==4){
+					if (request.status==200) {
+						anuncios=[];
+						var anunciosrecibidos = JSON.parse(request.responseText);
+						for (var i=0; i<anunciosrecibidos.length; i++){
+							var id=anunciosrecibidos[i].id;
+							var descripcion=anunciosrecibidos[i].descripcion;
+							var anuncio = new Anuncio(id, descripcion);
+							anuncios.push(anuncio);
+						}
+						mostrarAnuncios();
+					}else{
+						alert("Error. "+request.statusText);
+					}
+				}
+			};
+			var par="idCategoria=" + idCategoria;
+			request.send(par);
+		}
+		
+		function mostrarAnuncios(){
+			var areaPrincipal=document.getElementById("areaPrincipal");
+			areaPrincipal.innerHTML=""; 			//Se elimina todo el contenido (hijos) dentro de "areaPrincipal"
+			var span=document.createElement("span");
+			span.innerHTML="En esta categoría hay "+ anuncios.length +" anuncios ";
+			areaPrincipal.appendChild(span);
+			
+			var tabla=document.createElement("table");
+			areaPrincipal.appendChild(tabla);
+			var cols=3;
+			var filas=anuncios.length/cols;
+			
+			var cont=0;
+			for(var i=0; i<filas; i++){
+				var fila=document.createElement("tr");
+				tabla.appendChild(fila);
+				for(var j=0; j<cols; j++){
+					var celda=document.createElement("td");
+					fila.appendChild(celda);
+					if (cont<anuncios.length){
+						var span=anuncios[cont].getWidget();
+						celda.appendChild(span);
+						cont++;
+					}
+				}
+			}
+		}
+		
+		function Anuncio(id, descripcion){
+			this.id = id;
+			this.descripcion = descripcion;
+			this.fotos=[];
+		}
+		
+		Anuncio.prototype.getWidget = function(){
+			var result = document.createElement("span");
+			result.setAttribute("id", "anuncio" + this.id);
+			result.setAttribute("class", "spanAnuncio");
+			var etiquetaDescripcion=document.createElement("label");
+			etiquetaDescripcion.innerHTML=this.descripcion;
+			result.appendChild(etiquetaDescripcion);
+			return result;
+		}
+	</script>
+</body>
+</html>

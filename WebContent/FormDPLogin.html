@@ -1,0 +1,35 @@
+<label>email</label><input type="email" size="30" maxlength="40" id="email"><br>
+<label>password</label><input type="password" size="30" maxlength="40" id="password"><br>
+
+<script>
+function identificar(){
+	var req = new XMLHttpRequest();
+	req.open("POST", "Identificar.action")
+	req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	req.onreadystatechange=function(){
+		if (req.readyState==4) {
+			if (req.status==200){
+				var respuesta = req.responseText;
+				respuesta = JSON.parse(respuesta);
+				if (respuesta.resultado=="OK"){
+					sessionStorage.setItem("email", document.getElementById("email").value);
+					$('#datosPersonales').load('FormDPSesion.html');
+				} else {
+					alert(respuesta.resultado);
+				}
+			}else {
+				alert("Error. "+ request.statusText);
+			}
+		}
+	};
+	
+	var email = document.getElementById("email").value;
+	var pwd = document.getElementById("password").value;
+	
+	var pars = "email="+email+"&pwd="+pwd;
+	var uri = encodeURI(pars);
+	req.send(uri);
+	
+}
+</script>
+<button type="submit" onclick="identificar()">Entrar</button>
