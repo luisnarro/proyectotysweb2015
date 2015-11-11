@@ -40,4 +40,9 @@ public class Gestor {
 		usuario.recuperarAnuncios();
 	}
 
+	public boolean emailCorrecto(String email) {
+		//Recordar opRecordar = new Recordar(email);
+		return false;
+	}
+
 }

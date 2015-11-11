@@ -2,6 +2,8 @@ package edu.uclm.esi.tysweb2015.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Broker {
@@ -30,5 +32,31 @@ public class Broker {
 
 	public Connection getConnection(String userName, String pwd) throws SQLException {
 		return DriverManager.getConnection(url, userName, pwd);
+	}
+	
+	public Connection getDB(String email, String password) throws SQLException{
+		Connection db=getConnectionSeleccion();
+		try{
+			String SQL ="Select id from usuarios where email=?";
+			PreparedStatement p=db.prepareStatement(SQL);
+			p.setString(1, email);
+			ResultSet r=p.executeQuery();
+			Connection result = null;
+			if(r.next()){
+				int id=r.getInt(1);
+				String idUsuario="tysweb2015" + id;
+				result=DriverManager.getConnection(url, idUsuario, password);
+				r.close();
+			}else{
+				throw new SQLException("Login o pasword inválidos");
+			}
+			return result;
+		}
+		catch (SQLException e){
+			throw e;
+		}
+		finally{
+			db.close();
+		}
 	}
 }

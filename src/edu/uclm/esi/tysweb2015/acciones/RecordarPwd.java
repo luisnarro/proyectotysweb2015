@@ -12,6 +12,10 @@ public class RecordarPwd {
 	
 	public String execute() {
 		try {
+			Gestor gestor = Gestor.get();
+			if(!gestor.emailCorrecto(email))
+				throw new Exception();
+			
 			this.resultado="OK";
 			return ActionSupport.SUCCESS;
 		} catch (Exception e) {
