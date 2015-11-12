@@ -1,9 +1,6 @@
 package edu.uclm.esi.tysweb2015.acciones;
 
-import org.apache.struts2.ServletActionContext;
-
 import com.opensymphony.xwork2.ActionSupport;
-
 import edu.uclm.esi.tysweb2015.dominio.Gestor;
 
 public class RecordarPwd {
@@ -14,9 +11,9 @@ public class RecordarPwd {
 		try {
 			Gestor gestor = Gestor.get();
 			if(!gestor.emailCorrecto(email))
-				throw new Exception();
+				throw new Exception("El email no es válido.");
 			
-			this.resultado="OK";
+			this.resultado="Mensaje enviado. Verifica tu buzón de correo.";
 			return ActionSupport.SUCCESS;
 		} catch (Exception e) {
 			this.resultado=e.getMessage();

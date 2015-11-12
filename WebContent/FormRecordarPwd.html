@@ -4,14 +4,14 @@
 function recordar(){
 	//llamar a la acción "RecordarPwd.java"
 	var req = new XMLHttpRequest();
-	req.open("POST", "RecordarPwd.action")
+	req.open("POST", "RecordarPwd.action");
 	req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 	req.onreadystatechange=function(){
 		if (req.readyState==4) {
 			if (req.status==200){
 				var respuesta = req.responseText;
 				respuesta = JSON.parse(respuesta);
-				alert(respuesta);
+				alert(respuesta.resultado);
 			}else {
 				alert("Error. "+ request.statusText);
 			}

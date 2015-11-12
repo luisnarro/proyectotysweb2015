@@ -40,9 +40,13 @@ public class Gestor {
 		usuario.recuperarAnuncios();
 	}
 
-	public boolean emailCorrecto(String email) {
-		//Recordar opRecordar = new Recordar(email);
-		return false;
+	public boolean emailCorrecto(String email) throws SQLException, Exception {
+		boolean result = false;
+		Recordar opRecordar = new Recordar(email);
+		opRecordar.comprobarEmail();
+		if(opRecordar.idUsuario != null)
+			result = true;
+		return result;
 	}
 
 }
