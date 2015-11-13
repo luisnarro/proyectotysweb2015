@@ -27,7 +27,7 @@ public class Recordar {
 	private void procesoCambioPwd() throws SQLException, Exception {
 		generarToken();
 		DAORecordar.guardarToken(this);
-		enviarEmail();
+		//enviarEmail();
 	}
 
 	private void enviarEmail() {

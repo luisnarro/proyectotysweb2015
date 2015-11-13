@@ -1,6 +1,7 @@
 package edu.uclm.esi.tysweb2015.dominio;
 
 import java.sql.SQLException;
+
 import edu.uclm.esi.tysweb2015.dao.DAOAnuncio;
 
 public class Anuncio {
@@ -20,6 +21,11 @@ public class Anuncio {
 		this.idAnunciante = idAnunciante;
 	}
 	
+	public Anuncio(int idAnuncio, String descripcion) {
+		this.idAnuncio = idAnuncio;
+		this.descripcion = descripcion;
+	}
+
 	public void insert() throws Exception {
 		DAOAnuncio.insert(this);		
 	}

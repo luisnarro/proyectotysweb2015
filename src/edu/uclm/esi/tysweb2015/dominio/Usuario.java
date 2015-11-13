@@ -119,8 +119,9 @@ public class Usuario {
 		this.bd=bdUsuario;
 	}
 
-	public void setAnuncio(Anuncio anuncio) {
-		this.anuncios.add(anuncio);		
+	public void setAnuncio(Anuncio anuncio){
+		Anuncio anuncioMin = new Anuncio(anuncio.getIdAnuncio(), anuncio.getDescripcion());
+		this.anuncios.add(anuncioMin);
 	}
 
 }
