@@ -2,6 +2,8 @@ package edu.uclm.esi.tysweb2015.dominio;
 
 import java.sql.SQLException;
 
+import edu.uclm.esi.tysweb2015.dao.DAORecordar;
+
 public class Gestor {
 	private static Gestor yo;
 	
@@ -46,6 +48,11 @@ public class Gestor {
 		if(opRecordar.idUsuario != null)
 			result = true;
 		return result;
+	}
+
+	public void comprobarToken(String token) throws SQLException, Exception {
+		DAORecordar.comprobarToken(token);
+		
 	}
 
 }

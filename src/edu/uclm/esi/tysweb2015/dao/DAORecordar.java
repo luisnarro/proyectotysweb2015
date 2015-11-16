@@ -54,4 +54,28 @@ public class DAORecordar {
 			db.close();
 		}
 	}
+
+	public static void comprobarToken(String token) throws SQLException, Exception {
+		Connection db=Broker.get().getConnectionSeleccion();
+		try{
+			String SQL ="Select id from usuarios where email=?";
+			PreparedStatement p=db.prepareStatement(SQL);
+			//p.setString(1, recordar.email);
+			ResultSet r=p.executeQuery();
+			if(r.next()){
+				int id=r.getInt(1);
+				String idUsuario="tysweb2015" + id;
+				//recordar.idUsuario = idUsuario;
+				r.close();
+			}else{
+				throw new SQLException("El email no es válido.");
+			}
+		}
+		catch (SQLException e){
+			throw e;
+		}
+		finally{
+			db.close();
+		}		
+	}
 }
