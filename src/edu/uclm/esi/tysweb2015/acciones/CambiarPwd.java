@@ -1,7 +1,9 @@
 package edu.uclm.esi.tysweb2015.acciones;
 
 import com.opensymphony.xwork2.ActionSupport;
+
 import edu.uclm.esi.tysweb2015.dominio.Gestor;
+import edu.uclm.esi.tysweb2015.dominio.Recordar;
 
 public class CambiarPwd extends ActionSupport{
 	private String token;
@@ -15,7 +17,12 @@ public class CambiarPwd extends ActionSupport{
 			if(error!= null)
 				throw new Exception(error);
 			Gestor gestor=Gestor.get();
-			gestor.comprobarToken(token);
+			
+			Recordar cambioPwd = gestor.comprobarToken(token);
+			
+			// ¿eliminar y actualizar al mismo tiempo? (stored procedure)
+			//cambioPwd.eliminarToken();
+			cambioPwd.updatePwd(pwd1);
 			this.resultado="OK";
 			return SUCCESS;
 		} catch (Exception e) {

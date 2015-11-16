@@ -17,6 +17,8 @@ public class Recordar {
 		this.idUsuario = null;
 	}
 
+	public Recordar() {}
+
 	public void comprobarEmail() throws SQLException, Exception {
 		DAORecordar.comprobarUsuario(this);
 		if(this.idUsuario != null){
@@ -38,5 +40,33 @@ public class Recordar {
 		SecureRandom random = new SecureRandom();
 		String result = new BigInteger(130, random).toString(32);
 		this.token = result;
+	}
+
+	public void comprobarToken() throws SQLException, Exception {
+		DAORecordar.comprobarToken(this);
+	}
+
+	public void setToken(String token) {
+		this.token=token;
+	}
+
+	public String getToken() {
+		return this.token;
+	}
+
+	public void setIdUsuario(String idUsuario) {
+		this.idUsuario = idUsuario;
+	}
+
+	public String getIdUsuario() {
+		return this.idUsuario;
+	}
+
+	public void eliminarToken() throws SQLException, Exception {
+		DAORecordar.eliminarToken(this.token);
+	}
+
+	public void updatePwd(String pwd1) throws SQLException, Exception {
+		DAORecordar.updatePwd(pwd1, this.idUsuario);
 	}
 }

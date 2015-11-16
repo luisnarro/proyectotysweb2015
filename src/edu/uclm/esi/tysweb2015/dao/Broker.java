@@ -29,6 +29,10 @@ public class Broker {
 	public Connection getConnectionInsercion() throws SQLException {
 		return DriverManager.getConnection(url, "inserterTyS2015", "inserterTyS2015");
 	}
+	
+	public Connection getConnectionDelete() throws SQLException {
+		return DriverManager.getConnection(url, "deleteTyS2015", "deleteTyS2015");
+	}
 
 	public Connection getConnection(String userName, String pwd) throws SQLException {
 		return DriverManager.getConnection(url, userName, pwd);
