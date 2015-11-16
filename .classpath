@@ -14,9 +14,8 @@
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="C:/Users/LuisNarro/Documents/eclipseWTPworkspace/proyectoTySW/src/javax.mail.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/google-api-services-gmail-v1-rev3-1.18.0-rc.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/google-http-client-1.10.3-beta.jar"/>
-	<classpathentry kind="lib" path="src/javax.mail.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/javax.mail.jar"/>
 	<classpathentry kind="output" path="WebContent/WEB-INF/classes"/>
 </classpath>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Publianuncios - Cambiar contraseña</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+</head>
+<body>
+<h1>Introduce la nueva contraseña</h1>
+<label>Contraseña: </label><input type="password" id="pwd1" size="30" maxlength="40"><br>
+<label>Repetir: </label><input type="password" id="pwd2" size="30" maxlength="40"><br>
+<button type="submit" onclick="cambiarPwd()">Cambiar contraseña</button>
+<script>
+
+function cambiarPwd(){
+	var token = gup('u', window.location.href);
+	
+	var req = new XMLHttpRequest();
+	req.open("POST", "CambiarPwd.action");
+	req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	req.onreadystatechange=function(){
+		if (req.readyState==4) {
+			if (req.status==200){
+				var respuesta = req.responseText;
+				respuesta = JSON.parse(respuesta);
+				alert(respuesta.resultado);
+			}else {
+				alert("Error. "+ request.statusText);
+			}
+		}
+	};
+	
+	var pwd1 = document.getElementById("pwd1").value;
+	var pwd2 = document.getElementById("pwd2").value;
+	
+	var pars = "token="+token+"&pwd1="+pwd1+"&pwd2="+pwd2;
+	var uri = encodeURI(pars);
+	req.send(uri);
+}
+
+function gup( name, url ) {
+	  if (!url) url = location.href;
+	  name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+	  var regexS = "[\\?&]"+name+"=([^&#]*)";
+	  var regex = new RegExp( regexS );
+	  var results = regex.exec( url );
+	  return results == null ? null : results[1];
+}
+
+</script>
+</body>
+</html>

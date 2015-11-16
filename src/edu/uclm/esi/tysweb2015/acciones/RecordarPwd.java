@@ -1,6 +1,7 @@
 package edu.uclm.esi.tysweb2015.acciones;
 
 import com.opensymphony.xwork2.ActionSupport;
+
 import edu.uclm.esi.tysweb2015.dominio.Gestor;
 
 public class RecordarPwd {

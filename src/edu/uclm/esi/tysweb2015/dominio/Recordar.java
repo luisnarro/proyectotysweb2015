@@ -27,12 +27,11 @@ public class Recordar {
 	private void procesoCambioPwd() throws SQLException, Exception {
 		generarToken();
 		DAORecordar.guardarToken(this);
-		//enviarEmail();
+		enviarEmail();
 	}
 
-	private void enviarEmail() {
-		
-		
+	private void enviarEmail() throws Exception {
+		Mail.enviarMail(this.email, this.token);
 	}
 
 	private void generarToken() {

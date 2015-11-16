@@ -43,14 +43,12 @@ public class DAORecordar {
 			p.setInt(1, id);
 			p.setString(2, recordar.token);
 			p.executeUpdate();
-			/*if(r > 0){
-				recordar.idRecuperar = r;
-			}else{
-				throw new SQLException("Error al insertar el token.");
-			}*/
 		}
 		catch (SQLException e){
-			throw e;
+			if (e.getSQLState().equals("23000"))
+				throw new Exception("Ya hemos enviado un email. Comprueba tu correo.");
+			else
+				throw e;
 		}
 		finally{
 			db.close();

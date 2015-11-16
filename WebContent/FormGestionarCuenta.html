@@ -53,10 +53,11 @@ function cargarDatosPersonales(){
 							fila.appendChild(celda);
 							if (cont<anuncios.length){
 								var span = document.createElement("span");
-								span.setAttribute("id", anuncios[cont].idAnuncio);
+								var anuncioID = anuncios[cont].idAnuncio;
+								span.setAttribute("id", anuncioID);
 								span.setAttribute("class", "spanAnuncio");
 								var enlace=document.createElement("a");
-								enlace.setAttribute("href", "javascript:cargarGestionAnuncio()");
+								enlace.setAttribute("href", "javascript:cargarGestionAnuncio("+anuncioID+")");
 								enlace.innerHTML=anuncios[cont].descripcion;
 								//var etiquetaDescripcion=document.createElement("label");
 								//etiquetaDescripcion.innerHTML=anuncios[cont].descripcion;
@@ -77,8 +78,12 @@ function cargarDatosPersonales(){
 	req.send();
 }
 
-function cargarGestionAnuncio(){
-	$('#areaPrincipal').load('FormGestionarAnuncio.html');
+function cargarGestionAnuncio(idAnuncio){
+	//$('#areaPrincipal').load('FormGestionarAnuncio.html?id='+idAnuncio);
+	//Limpiar #areaPrincipal y poner los elementos de FormGestionarAnuncio utilizando el DOM.
+	//Después recuperar el anuncio con 'idAnuncio' y rellenar los elementos con la información.
+	var areaAnuncios = document.getElementById("areaPrincipal");
+	areaPrincipal.innerHTML="";
 }
 
 function volver(){

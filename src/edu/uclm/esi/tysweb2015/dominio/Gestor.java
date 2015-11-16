@@ -1,7 +1,6 @@
 package edu.uclm.esi.tysweb2015.dominio;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 public class Gestor {
 	private static Gestor yo;
