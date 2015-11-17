@@ -37,8 +37,8 @@ public class Broker {
 	}
 	
 	public Conexion getConnectionInsercion() throws SQLException {
-		return this.pool.getConexionInsercion();
 		//return DriverManager.getConnection(url, "inserterTyS2015", "inserterTyS2015");
+		return this.pool.getConexionInsercion();
 	}
 	
 	public Connection getConnectionDelete() throws SQLException {

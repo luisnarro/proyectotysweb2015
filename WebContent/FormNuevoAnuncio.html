@@ -10,6 +10,13 @@
 		<option>	</option>
 	</select>
 </p>
+<p>
+<form id="formFoto" enctype="multipart/form-data" sytle="disyplay:noe;">
+	<label for="foto">Fotos:</label><input type="file" id="foto" name="foto" accept="image/*">
+	<br>
+	<button type="button" id="guardar" onclick="subirFoto()">Subir</button>
+</form>
+</p>
 
 <script>
 var request = new XMLHttpRequest();
@@ -32,6 +39,32 @@ request.onreadystatechange=function(){
 	}
 };
 request.send();
+
+function subirFoto(){
+	var req = new XMLHttpRequest();
+	//var progreso = document.getElementById("progreso");
+	var f=document.getElementById("formFoto");
+	var formData = new FormData(f);
+	req.open("POST", "SubirFoto.action")
+	req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	req.onreadystatechange=function(){
+		if (req.readyState==3){
+			//progreso.innerHTML="Respuesta recibida";
+		}
+		if (req.readyState==4) {
+			if (req.status==200){
+				var respuesta = req.responseText;
+				respuesta = JSON.parse(respuesta);
+				//progreso.innerHTML="Foto subida correctamente con Id= "+ respuesta.mensaje;
+				//mostrarFoto();
+				alert(respuesta.resultado);
+			}else {
+				alert("Error. "+ request.statusText);
+			}
+		}
+	};
+	req.send(formData);
+}
 
 function insertarAnuncio(){
 	var req = new XMLHttpRequest();

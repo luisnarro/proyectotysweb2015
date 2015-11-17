@@ -1,15 +1,12 @@
 <%@ page language="java" contentType="application/json; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<%@ page import="java.sql.*, org.json.*" %>
+<%@ page import="edu.uclm.esi.tysweb2015.dao.*,java.sql.*, org.json.*" %>
 
 <%
 
 int idCategoria=Integer.parseInt(request.getParameter("idCategoria"));
+Conexion db=Broker.get().getConnectionSeleccion();
 
-Class.forName("com.mysql.jdbc.Driver");
-//String url="jdbc:mysql://alarcosj.esi.uclm.es:3306/tysweb2015";
-String url="jdbc:mysql://localhost:3306/tysweb2015";
-Connection db=DriverManager.getConnection(url, "selectorTSW2015", "selectorTSW2015");
 String sql ="select id, descripcion from anuncios where idCategoria=? order by fechaDeAlta DESC";
 
 PreparedStatement ps=db.prepareStatement(sql);

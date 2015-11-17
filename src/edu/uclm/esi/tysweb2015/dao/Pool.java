@@ -13,7 +13,7 @@ public class Pool {
 		seleccionLibres=new Vector<>();
 		seleccionOcupadas=new Vector<>();
 		insercionLibres=new Vector<>();
-		seleccionOcupadas=new Vector<>();
+		insercionOcupadas=new Vector<>();
 		
 		for(int i=0; i<nS; i++){
 			Conexion conexion = new Conexion("selectorTSW2015", "selectorTSW2015", this);
@@ -21,7 +21,7 @@ public class Pool {
 		}
 		
 		for(int i=0; i<nI; i++){
-			Conexion conexion = new Conexion("inserterTSW2015", "inserterTSW2015", this);
+			Conexion conexion = new Conexion("inserterTyS2015", "inserterTyS2015", this);
 			insercionLibres.add(conexion);
 		}
 	}
