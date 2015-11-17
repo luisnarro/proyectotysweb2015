@@ -6,6 +6,7 @@ import edu.uclm.esi.tysweb2015.dominio.Gestor;
 import edu.uclm.esi.tysweb2015.dominio.Recordar;
 
 public class CambiarPwd extends ActionSupport{
+	private static final long serialVersionUID = 1L;
 	private String token;
 	private String pwd1;
 	private String pwd2;

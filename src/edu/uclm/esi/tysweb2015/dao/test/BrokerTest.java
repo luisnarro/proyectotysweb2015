@@ -17,21 +17,21 @@ import edu.uclm.esi.tysweb2015.dao.Conexion;
 public class BrokerTest {
 
 	//@Test
-	public void testAperturaDeConexiones() throws Exception {
-		Broker db=Broker.get();
-		
-		int i=1;
-		boolean error=false;
-		do{
-			try{
-				db.getDB("paco@uclm.es", "pass");
-			}catch (SQLException e) {
-				error=true;
-			}
-			System.out.println(i++);
-		}while (!error);
-		fail("Error a las " + i);
-	}
+//	public void testAperturaDeConexiones() throws Exception {
+//		Broker db=Broker.get();
+//		
+//		int i=1;
+//		boolean error=false;
+//		do{
+//			try{
+//				db.getDB("paco@uclm.es", "pass");
+//			}catch (SQLException e) {
+//				error=true;
+//			}
+//			System.out.println(i++);
+//		}while (!error);
+//		fail("Error a las " + i);
+//	}
 	
 	//@Test
 	public void tiemposDeInsercion(){

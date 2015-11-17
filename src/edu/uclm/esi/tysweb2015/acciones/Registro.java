@@ -4,6 +4,7 @@ import com.opensymphony.xwork2.ActionSupport;
 import edu.uclm.esi.tysweb2015.dominio.Gestor;
 
 public class Registro extends ActionSupport {
+	private static final long serialVersionUID = 1L;
 	private String email;
 	private String nombre;
 	private String apellido1;

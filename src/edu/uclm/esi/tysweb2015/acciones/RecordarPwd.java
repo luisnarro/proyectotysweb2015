@@ -4,7 +4,8 @@ import com.opensymphony.xwork2.ActionSupport;
 
 import edu.uclm.esi.tysweb2015.dominio.Gestor;
 
-public class RecordarPwd {
+public class RecordarPwd extends ActionSupport{
+	private static final long serialVersionUID = 1L;
 	private String email;
 	private String resultado;
 	
@@ -15,10 +16,10 @@ public class RecordarPwd {
 				throw new Exception("El email no es válido.");
 			
 			this.resultado="Mensaje enviado. Verifica tu buzón de correo.";
-			return ActionSupport.SUCCESS;
+			return SUCCESS;
 		} catch (Exception e) {
 			this.resultado=e.getMessage();
-			return ActionSupport.ERROR;
+			return ERROR;
 		}
 	}
 	

@@ -6,7 +6,8 @@ import com.opensymphony.xwork2.ActionSupport;
 import edu.uclm.esi.tysweb2015.dominio.Gestor;
 import edu.uclm.esi.tysweb2015.dominio.Usuario;
 
-public class Login {
+public class Login extends ActionSupport{
+	private static final long serialVersionUID = 1L;
 	private String email;
 	private String pwd;
 	private String resultado;
@@ -17,10 +18,10 @@ public class Login {
 			Usuario usuario = gestor.identificar(email, pwd);
 			ServletActionContext.getRequest().getSession().setAttribute("usuario", usuario);
 			this.resultado="OK";
-			return ActionSupport.SUCCESS;
+			return SUCCESS;
 		} catch (Exception e) {
 			this.resultado=e.getMessage();
-			return ActionSupport.ERROR;
+			return ERROR;
 		}
 	}
 	

@@ -10,16 +10,16 @@ public class Broker {
 	private static Broker yo;
 	private Pool pool;
 	//private String url="jdbc:mysql://alarcosj.esi.uclm.es:3306/tysweb2015?noAccessToProcedureBodies=true";
-	private String url="jdbc:mysql://localhost:3306/tysweb2015?noAccessToProcedureBodies=true";
+	private String url;
 	
 	private Broker() throws SQLException{
 		try{
 			Class.forName("com.mysql.jdbc.Driver");
 			this.pool=new Pool(20, 10);
+			url="jdbc:mysql://localhost:3306/tysweb2015?noAccessToProcedureBodies=true";
 		}catch (ClassNotFoundException e){
 			System.out.println(e.toString());
 		}
-		
 	}
 	
 	public static Broker get() throws Exception{
@@ -28,8 +28,6 @@ public class Broker {
 		}
 		return yo;
 	}
-	
-	
 
 	public Conexion getConnectionSeleccion() throws SQLException {
 		//return DriverManager.getConnection(url, "selectorTSW2015", "selectorTSW2015");

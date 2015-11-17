@@ -6,7 +6,8 @@ import edu.uclm.esi.tysweb2015.dominio.Gestor;
 import edu.uclm.esi.tysweb2015.dominio.Usuario;
 import com.opensymphony.xwork2.ActionSupport;
 
-public class NuevoAnuncio {
+public class NuevoAnuncio extends ActionSupport{
+	private static final long serialVersionUID = 1L;
 	private String descripcion;
 	private int categoria;
 	private String resultado;
@@ -19,10 +20,10 @@ public class NuevoAnuncio {
 			Anuncio anuncio = gestor.nuevoAnuncio(descripcion, categoria, idAnunciante);
 			usuario.setAnuncio(anuncio);
 			this.resultado="OK";
-			return ActionSupport.SUCCESS;
+			return SUCCESS;
 		} catch (Exception e) {
 			this.resultado=e.getMessage();
-			return ActionSupport.ERROR;
+			return ERROR;
 		}
 	}
 	

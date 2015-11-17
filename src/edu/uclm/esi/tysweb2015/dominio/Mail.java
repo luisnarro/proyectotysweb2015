@@ -36,7 +36,7 @@ public class Mail {
 			message.setFrom(new InternetAddress(userName));
 			message.setRecipients(Message.RecipientType.TO,	InternetAddress.parse(destino));
 			message.setSubject("Recuperar contraseña");
-			message.setText("Recuperar contraseña: http://localhost:8080/practica/FormDPCambiar.html?u="+token);
+			message.setText("Recuperar contraseña: http://localhost:8080/proyectoTySW/FormCambiarPwd.html?u="+token);
 			Transport.send(message);
 
 		} catch (MessagingException e) {

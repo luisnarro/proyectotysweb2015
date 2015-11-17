@@ -10,6 +10,7 @@ import com.opensymphony.xwork2.ActionSupport;
 import edu.uclm.esi.tysweb2015.dominio.Anuncio;
 
 public class SubirFoto extends ActionSupport{
+	private static final long serialVersionUID = 1L;
 	private File foto;
 	private String uploadContentType;
 	private String tmpFileName;
@@ -19,11 +20,12 @@ public class SubirFoto extends ActionSupport{
 	public String execute(){
 		try{
 			String tmpFolder=System.getProperty("java.io.tmpdir");
-			int rnd = new Random().nextInt(1000);
-			this.tmpFileName = tmpFolder+rnd;
+			int rnd = Math.abs(new Random().nextInt());
+			this.tmpFileName = tmpFolder + rnd;
 			File theFile = new File(tmpFileName);
 			FileUtils.copyFile(upload, theFile);
-			Anuncio anuncio = new Anuncio();
+			//Recuperar el anuncio de la sesión (se ha puesto al subir el anuncio)
+			//Añadir la foto al anuncio mediante un método (anuncio.addFoto(theFile, this.uploadContentType))
 			
 			this.resultado="OK";
 			return SUCCESS;
