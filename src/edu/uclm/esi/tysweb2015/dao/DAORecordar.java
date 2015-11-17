@@ -10,7 +10,7 @@ import edu.uclm.esi.tysweb2015.dominio.Recordar;
 public class DAORecordar {
 
 	public static void comprobarUsuario(Recordar recordar) throws SQLException, Exception {
-		Connection db=Broker.get().getConnectionSeleccion();
+		Conexion db=Broker.get().getConnectionSeleccion();
 		try{
 			String SQL ="Select id from usuarios where email=?";
 			PreparedStatement p=db.prepareStatement(SQL);
@@ -34,7 +34,7 @@ public class DAORecordar {
 	}
 
 	public static void guardarToken(Recordar recordar) throws SQLException, Exception {
-		Connection db=Broker.get().getConnectionInsercion();
+		Conexion db=Broker.get().getConnectionInsercion();
 		try{
 			String SQL ="insert into recuperar(idUsuario,token) values(?,?)";
 			PreparedStatement p=db.prepareStatement(SQL);
@@ -56,7 +56,7 @@ public class DAORecordar {
 	}
 
 	public static void comprobarToken(Recordar recordar) throws SQLException, Exception {
-		Connection db=Broker.get().getConnectionSeleccion();
+		Conexion db=Broker.get().getConnectionSeleccion();
 		String idUsuario;
 		try{
 			String SQL ="Select id,idUsuario from recuperar where token=? and expira > now()";
@@ -98,7 +98,7 @@ public class DAORecordar {
 	}
 
 	public static void updatePwd(String pwd, String idUsuario) throws SQLException, Exception {
-		Connection db=Broker.get().getConnectionInsercion();
+		Conexion db=Broker.get().getConnectionInsercion();
 		try{
 			String SQL ="UPDATE mysql.user SET Password=PASSWORD(?) WHERE User=? AND Host='localhost'";
 			PreparedStatement p=db.prepareStatement(SQL);

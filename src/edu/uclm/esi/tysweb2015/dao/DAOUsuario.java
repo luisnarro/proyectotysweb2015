@@ -12,7 +12,7 @@ import edu.uclm.esi.tysweb2015.dominio.Usuario;
 public class DAOUsuario {
 
 	public static void insert(Usuario usuario) throws SQLException, Exception {
-		Connection bd = Broker.get().getConnectionInsercion();
+		Conexion bd = Broker.get().getConnectionInsercion();
 		try{
 			String sql="{call insertarUsuario (?, ?, ?, ?, ?, ?, ?, ?)}";
 			CallableStatement cs=bd.prepareCall(sql);
@@ -38,7 +38,7 @@ public class DAOUsuario {
 	}
 
 	public static void identificar(Usuario usuario, String email, String pwd) throws SQLException, Exception {
-		Connection bd = Broker.get().getConnectionSeleccion();
+		Conexion bd = Broker.get().getConnectionSeleccion();
 		try{
 			String sql= "SELECT id, nombre, apellido1, apellido2, telefono, idUbicacion FROM Usuarios where email=?";
 			PreparedStatement p = bd.prepareStatement(sql);
@@ -52,18 +52,19 @@ public class DAOUsuario {
 				String telefono = rs.getString(5);
 				int idubicacion = rs.getInt(6);
 				String userName = "tysweb2015" + id;
-				Connection bdUsuario = Broker.get().getConnection(userName, pwd);
-				usuario.setIdUsuario(id);
-				usuario.setEmail(email);
-				usuario.setNombre(nombre);
-				usuario.setApellido1(apellido1);
-				usuario.setApellido2(apellido2);
-				usuario.setTelefono(telefono);
-				usuario.setPwd1(pwd);
-				usuario.setIdUbicacion(idubicacion);
-				//usuario = new Usuario(email, nombre, apellido1, apellido2, telefono, pwd, idubicacion);
-				usuario.setConnection(bdUsuario);
 				
+				if (Broker.get().existe(email, pwd)){
+					usuario.setIdUsuario(id);
+					usuario.setEmail(email);
+					usuario.setNombre(nombre);
+					usuario.setApellido1(apellido1);
+					usuario.setApellido2(apellido2);
+					usuario.setTelefono(telefono);
+					usuario.setPwd1(pwd);
+					usuario.setIdUbicacion(idubicacion);
+					//usuario = new Usuario(email, nombre, apellido1, apellido2, telefono, pwd, idubicacion);
+					//usuario.setConnection(bdUsuario);
+				}
 			}else {
 				throw new Exception("Login o contraseña incorrectos");
 			}
@@ -77,7 +78,7 @@ public class DAOUsuario {
 	}
 
 	public static void recuperarAnuncios(Usuario usuario) throws SQLException, Exception {
-		Connection bd = Broker.get().getConnectionSeleccion();
+		Conexion bd = Broker.get().getConnectionSeleccion();
 		try{
 			String sql= "SELECT id, fechaDeAlta, descripcion, idCategoria FROM Anuncios where idAnunciante=?";
 			PreparedStatement p = bd.prepareStatement(sql);

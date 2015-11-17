@@ -16,7 +16,7 @@ public class Usuario {
 	private String telefono;
 	private String pwd1;
 	private int idUbicacion;
-	private Connection bd;
+	//private Connection bd;
 	private ArrayList<Anuncio> anuncios = new ArrayList<Anuncio>();
 	
 	public Usuario() {
@@ -115,9 +115,12 @@ public class Usuario {
 		return anuncios;
 	}
 
-	public void setConnection(Connection bdUsuario) {
-		this.bd=bdUsuario;
-	}
+	/*
+	 *	public void setConnection(Connection bdUsuario) {
+	 *		this.bd=bdUsuario;
+	 *	}
+	 */
+	
 
 	public void setAnuncio(Anuncio anuncio){
 		Anuncio anuncioMin = new Anuncio(anuncio.getIdAnuncio(), anuncio.getDescripcion());

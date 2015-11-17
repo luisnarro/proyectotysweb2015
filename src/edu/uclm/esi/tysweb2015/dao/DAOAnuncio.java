@@ -8,7 +8,7 @@ import edu.uclm.esi.tysweb2015.dominio.Anuncio;
 public class DAOAnuncio {
 	
 	public static void insert(Anuncio anuncio) throws SQLException, Exception {
-		Connection bd = Broker.get().getConnectionInsercion();
+		Conexion bd = Broker.get().getConnectionInsercion();
 		try{
 			String sql="{call insertarAnuncio (?, ?, ?, ?)}";
 			CallableStatement cs=bd.prepareCall(sql);

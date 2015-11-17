@@ -12,6 +12,7 @@ import org.junit.Test;
 import com.mysql.jdbc.Connection;
 
 import edu.uclm.esi.tysweb2015.dao.Broker;
+import edu.uclm.esi.tysweb2015.dao.Conexion;
 
 public class BrokerTest {
 
@@ -39,7 +40,7 @@ public class BrokerTest {
 		//Conexión abierta
 		try{
 			long timeIni = System.currentTimeMillis();
-			java.sql.Connection db=Broker.get().getConnectionInsercion();
+			Conexion db=Broker.get().getConnectionInsercion();
 			PreparedStatement p=db.prepareStatement(sql);
 			for(int i=0; i<300; i++){
 				p.setString(1, "Anuncio de un coche de prueba");
@@ -58,7 +59,7 @@ public class BrokerTest {
 		try{
 			long timeIni = System.currentTimeMillis();
 			for(int i=0; i<300; i++){
-				java.sql.Connection db=Broker.get().getConnectionInsercion();
+				Conexion db=Broker.get().getConnectionInsercion();
 				PreparedStatement p=db.prepareStatement(sql);
 				p.setString(1, "Anuncio de un coche de prueba");
 				p.setInt(2, 4);
@@ -80,7 +81,7 @@ public class BrokerTest {
 		
 		try{
 			long timeIni1 = System.currentTimeMillis();
-			java.sql.Connection db=Broker.get().getConnectionSeleccion();
+			Conexion db=Broker.get().getConnectionSeleccion();
 			PreparedStatement p=db.prepareStatement(sql1);
 			ResultSet r = p.executeQuery();
 			r.next();
@@ -88,7 +89,7 @@ public class BrokerTest {
 			System.out.println("Tiempo con índice: " + (timeFinal1-timeIni1)/100);
 			
 			long timeIni2 = System.currentTimeMillis();
-			java.sql.Connection db2=Broker.get().getConnectionSeleccion();
+			Conexion db2=Broker.get().getConnectionSeleccion();
 			PreparedStatement p2=db2.prepareStatement(sql2);
 			ResultSet r2 = p2.executeQuery();
 			r2.next();
@@ -106,7 +107,7 @@ public class BrokerTest {
 		
 		try{
 			long timeIni = System.currentTimeMillis();
-			java.sql.Connection db=Broker.get().getConnectionInsercion();
+			Conexion db=Broker.get().getConnectionInsercion();
 			PreparedStatement p=db.prepareStatement(sql);
 			for(int i=0; i<300; i++){
 				String cadenaAleatoria = getCadenaAleatoria();

@@ -8,11 +8,18 @@ import java.sql.SQLException;
 
 public class Broker {
 	private static Broker yo;
+	private Pool pool;
 	//private String url="jdbc:mysql://alarcosj.esi.uclm.es:3306/tysweb2015?noAccessToProcedureBodies=true";
 	private String url="jdbc:mysql://localhost:3306/tysweb2015?noAccessToProcedureBodies=true";
 	
-	private Broker() throws ClassNotFoundException{
-		Class.forName("com.mysql.jdbc.Driver");
+	private Broker() throws SQLException{
+		try{
+			Class.forName("com.mysql.jdbc.Driver");
+			this.pool=new Pool(20, 10);
+		}catch (ClassNotFoundException e){
+			System.out.println(e.toString());
+		}
+		
 	}
 	
 	public static Broker get() throws Exception{
@@ -21,13 +28,17 @@ public class Broker {
 		}
 		return yo;
 	}
+	
+	
 
-	public Connection getConnectionSeleccion() throws SQLException {
-		return DriverManager.getConnection(url, "selectorTSW2015", "selectorTSW2015");
+	public Conexion getConnectionSeleccion() throws SQLException {
+		//return DriverManager.getConnection(url, "selectorTSW2015", "selectorTSW2015");
+		return this.pool.getConexionSelection();
 	}
 	
-	public Connection getConnectionInsercion() throws SQLException {
-		return DriverManager.getConnection(url, "inserterTyS2015", "inserterTyS2015");
+	public Conexion getConnectionInsercion() throws SQLException {
+		return this.pool.getConexionInsercion();
+		//return DriverManager.getConnection(url, "inserterTyS2015", "inserterTyS2015");
 	}
 	
 	public Connection getConnectionDelete() throws SQLException {
@@ -38,8 +49,9 @@ public class Broker {
 		return DriverManager.getConnection(url, userName, pwd);
 	}
 	
-	public Connection getDB(String email, String password) throws SQLException{
-		Connection db=getConnectionSeleccion();
+	public boolean existe(String email, String password) throws SQLException{
+		boolean resultado=false;
+		Conexion db=getConnectionSeleccion();
 		try{
 			String SQL ="Select id from usuarios where email=?";
 			PreparedStatement p=db.prepareStatement(SQL);
@@ -50,11 +62,13 @@ public class Broker {
 				int id=r.getInt(1);
 				String idUsuario="tysweb2015" + id;
 				result=DriverManager.getConnection(url, idUsuario, password);
+				resultado=true;
+				result.close();
 				r.close();
 			}else{
 				throw new SQLException("Login o pasword inválidos");
 			}
-			return result;
+			return resultado;
 		}
 		catch (SQLException e){
 			throw e;
