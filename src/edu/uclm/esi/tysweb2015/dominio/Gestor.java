@@ -52,6 +52,7 @@ public class Gestor {
 		Recordar opRecordar = new Recordar();
 		opRecordar.setToken(token);
 		opRecordar.comprobarToken();
+		opRecordar.comprobarFecha();
 		return opRecordar;
 		
 	}

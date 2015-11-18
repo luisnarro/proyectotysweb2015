@@ -79,6 +79,31 @@ public class DAORecordar {
 			db.close();
 		}	
 	}
+	
+	public static void comprobarFecha(Recordar recordar) throws SQLException, Exception {
+		Conexion db=Broker.get().getConnectionSeleccion();
+		String idUsuario;
+		try{
+			String SQL ="Select id,idUsuario from recuperar where token=? and expira > now()";
+			PreparedStatement p=db.prepareStatement(SQL);
+			p.setString(1, recordar.getToken());
+			ResultSet r=p.executeQuery();
+			if(r.next()){
+				int id=r.getInt(2);
+				idUsuario="tysweb2015" + id;
+				recordar.setIdUsuario(idUsuario);
+				r.close();
+			}else{
+				throw new SQLException("Token no válido o expiró.");
+			}
+		}
+		catch (SQLException e){
+			throw e;
+		}
+		finally{
+			db.close();
+		}	
+	}
 
 	public static void eliminarToken(String token) throws SQLException, Exception {
 		Connection db=Broker.get().getConnectionDelete();

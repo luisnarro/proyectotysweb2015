@@ -45,6 +45,10 @@ public class Recordar {
 	public void comprobarToken() throws SQLException, Exception {
 		DAORecordar.comprobarToken(this);
 	}
+	
+	public void comprobarFecha() throws SQLException, Exception {
+		DAORecordar.comprobarFecha(this);	
+	}
 
 	public void setToken(String token) {
 		this.token=token;
@@ -69,4 +73,6 @@ public class Recordar {
 	public void updatePwd(String pwd1) throws SQLException, Exception {
 		DAORecordar.updatePwd(pwd1, this.idUsuario);
 	}
+
+	
 }

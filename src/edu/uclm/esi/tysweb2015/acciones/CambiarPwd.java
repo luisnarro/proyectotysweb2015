@@ -22,8 +22,8 @@ public class CambiarPwd extends ActionSupport{
 			Recordar cambioPwd = gestor.comprobarToken(token);
 			
 			// ¿eliminar y actualizar al mismo tiempo? (stored procedure)
-			//cambioPwd.eliminarToken();
-			cambioPwd.updatePwd(pwd1);
+			cambioPwd.eliminarToken();
+			//cambioPwd.updatePwd(pwd1);
 			this.resultado="OK";
 			return SUCCESS;
 		} catch (Exception e) {
