@@ -69,6 +69,7 @@ public class DAORecordar {
 				recordar.setIdUsuario(idUsuario);
 				r.close();
 			}else{
+				recordar.eliminarToken();
 				throw new SQLException("Token no válido o expiró.");
 			}
 		}
