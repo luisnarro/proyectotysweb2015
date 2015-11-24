@@ -20,18 +20,20 @@ public class SubirFoto extends ActionSupport{
 	
 	public String execute(){
 		try{
-			String tmpFolder=System.getProperty("java.io.tmpdir");
-			
+			//String tmpFolder=System.getProperty("java.io.tmpdir");
+			//String tmpFolder = ServletActionContext.getServletContext().getRealPath("/images");
+			String tmp = ServletActionContext.getServletContext().getContextPath();
+			String tmpFolder = tmp + "/WebContent/WEB-INF/";
 			int rnd = Math.abs(new Random().nextInt());
 			this.tmpFileName = tmpFolder + rnd;
 			File theFile = new File(tmpFileName);
 			FileUtils.copyFile(this.upload, theFile);
 			
 			//Recuperar el anuncio de la sesión (se ha puesto al subir el anuncio)
-			//Anuncio anuncio = (Anuncio) ServletActionContext.getRequest().getSession().getAttribute("anuncio");
+			Anuncio anuncio = (Anuncio) ServletActionContext.getRequest().getSession().getAttribute("anuncio");
 			
 			//Añadir la foto al anuncio mediante un método (anuncio.addFoto(theFile, this.uploadContentType))
-			//anuncio.addFoto(theFile, this.uploadContentType);
+			//anuncio.addFoto(tmpFileName, this.uploadContentType);
 			
 			this.resultado="OK";
 			return SUCCESS;

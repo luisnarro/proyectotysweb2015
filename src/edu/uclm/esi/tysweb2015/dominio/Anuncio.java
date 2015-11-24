@@ -62,8 +62,9 @@ public class Anuncio {
 		this.idAnunciante = idAnunciante;
 	}
 
-	public void addFoto(File theFile, String uploadContentType) {
+	public void addFoto(String filePath, String uploadContentType) {
 		// TO-DO
+		
 	}
 
 }

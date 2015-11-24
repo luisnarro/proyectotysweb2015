@@ -53,8 +53,8 @@ public class Gestor {
 		opRecordar.setToken(token);
 		opRecordar.comprobarToken();
 		opRecordar.comprobarFecha();
-		opRecordar.eliminarToken();
 		opRecordar.updatePwd(pwd);
+		opRecordar.eliminarToken();
 		return opRecordar;
 		
 	}

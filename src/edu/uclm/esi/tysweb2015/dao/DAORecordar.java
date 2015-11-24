@@ -124,12 +124,13 @@ public class DAORecordar {
 	}
 
 	public static void updatePwd(String pwd, String idUsuario) throws SQLException, Exception {
-		Conexion db=Broker.get().getConnectionInsercion();
+		//Conexion db=Broker.get().getConnectionInsercion();
+		Connection db = Broker.get().getConnection("root", "pass");
 		try{
-			String SQL ="UPDATE mysql.user SET Password=PASSWORD(?) WHERE User=? AND Host='localhost'";
+			String SQL ="SET PASSWORD FOR ?@localhost = PASSWORD(?)";
 			PreparedStatement p=db.prepareStatement(SQL);
-			p.setString(1, pwd);
-			p.setString(2, idUsuario);
+			p.setString(2, pwd);
+			p.setString(1, idUsuario);
 			p.execute();
 		}
 		catch (SQLException e){
