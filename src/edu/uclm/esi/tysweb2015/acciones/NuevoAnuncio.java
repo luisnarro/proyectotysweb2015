@@ -18,6 +18,7 @@ public class NuevoAnuncio extends ActionSupport{
 			int idAnunciante = usuario.getIdUusuario();
 			Gestor gestor=Gestor.get();
 			Anuncio anuncio = gestor.nuevoAnuncio(descripcion, categoria, idAnunciante);
+			ServletActionContext.getRequest().getSession().setAttribute("anuncio", anuncio);
 			usuario.setAnuncio(anuncio);
 			this.resultado="OK";
 			return SUCCESS;

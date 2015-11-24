@@ -1,5 +1,6 @@
 package edu.uclm.esi.tysweb2015.dominio;
 
+import java.io.File;
 import java.sql.SQLException;
 
 import edu.uclm.esi.tysweb2015.dao.DAOAnuncio;
@@ -59,6 +60,10 @@ public class Anuncio {
 	}
 	public void setIdAnunciante(int idAnunciante) {
 		this.idAnunciante = idAnunciante;
+	}
+
+	public void addFoto(File theFile, String uploadContentType) {
+		// TO-DO
 	}
 
 }

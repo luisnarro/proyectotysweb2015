@@ -2,21 +2,28 @@
 	<h2>Nuevo Anuncio</h2>
 </p>
 <p>
+<form>
 	<label>Descripción</label><textarea cols="30" rows="5" id="descripcion"></textarea><br>
-</p>
-<p>
+
+
 	<label for="selectCategoria">Categoría:</label>
 	<select id="selectCategoria">
 		<option>	</option>
 	</select>
+
+<br>
+<button type="button" onclick="insertarAnuncio()" id="publicar">Publicar</button>
+</form>
 </p>
 <p>
-<form id="formFoto" enctype="multipart/form-data" style="display:block;">
+<form id="formFoto" enctype="multipart/form-data" style="display:none;">
 	<label for="foto">Fotos:</label><input type="file" id="foto" name="foto" accept="image/*">
 	<br>
 	<button type="button" id="guardar" onclick="subirFoto()">Subir</button>
 </form>
 </p>
+
+<button type="button" id="chatEnviar" onclick="enviarMensaje()">Chat</button>
 
 <script>
 var request = new XMLHttpRequest();
@@ -39,6 +46,31 @@ request.onreadystatechange=function(){
 	}
 };
 request.send();
+
+// <<CHAT>>
+if (window.WebSocket==undefined) {
+	alert("Lo sentimos, pero tu navegador no soporta este tipo de comunicación");
+}
+var url="ws://" + window.location.hostname + ":" + window.location.port + "/proyectoTySW/servidorChat";
+chat=new WebSocket(url);
+chat.onopen = function() {
+	var mensaje = {
+			tipo : "identificacion",
+			texto : "pepe@pepe.com"
+	};
+	chat.send(JSON.stringify(mensaje));
+}
+chat.onerror = function() {
+	alert("Se ha producido un error al cargar el Chat");
+}
+chat.onclose = function() {
+	alert("Websocket chat cerrado");
+}
+
+function enviarMensaje(){
+	chat.send("Hola");
+}
+// <<CHAT>>
 
 function subirFoto(){
 	var req = new XMLHttpRequest();
@@ -76,6 +108,7 @@ function insertarAnuncio(){
 				var respuesta = req.responseText;
 				respuesta = JSON.parse(respuesta);
 				alert(respuesta.resultado);
+				document.getElementById("formFoto").style.display = "block";
 			}else {
 				alert("Error. "+ request.statusText);
 			}
@@ -90,4 +123,3 @@ function insertarAnuncio(){
 	req.send(uri);
 }
 </script>
-<button type="submit" onclick="insertarAnuncio()">Publicar</button>

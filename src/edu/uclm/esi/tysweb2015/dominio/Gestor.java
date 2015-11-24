@@ -48,11 +48,13 @@ public class Gestor {
 		return result;
 	}
 
-	public Recordar comprobarToken(String token) throws SQLException, Exception {
+	public Recordar procesoCambio(String token, String pwd) throws SQLException, Exception {
 		Recordar opRecordar = new Recordar();
 		opRecordar.setToken(token);
 		opRecordar.comprobarToken();
 		opRecordar.comprobarFecha();
+		opRecordar.eliminarToken();
+		opRecordar.updatePwd(pwd);
 		return opRecordar;
 		
 	}
