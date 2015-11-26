@@ -62,7 +62,7 @@ public class Anuncio {
 		this.idAnunciante = idAnunciante;
 	}
 
-	public int addFoto(int identificador, String uploadContentType) throws SQLException, Exception {
+	public int addFoto(String identificador, String uploadContentType) throws SQLException, Exception {
 		return DAOAnuncio.addFoto(this, identificador, uploadContentType);
 	}
 

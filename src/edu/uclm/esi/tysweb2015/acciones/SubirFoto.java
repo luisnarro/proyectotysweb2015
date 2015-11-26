@@ -1,8 +1,11 @@
 package edu.uclm.esi.tysweb2015.acciones;
 
 import java.io.File;
+import java.nio.ByteBuffer;
 import java.util.Random;
+import java.util.UUID;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.apache.struts2.ServletActionContext;
 import org.json.JSONException;
@@ -26,7 +29,7 @@ public class SubirFoto extends ActionSupport{
 			//String tmpFolder = ServletActionContext.getServletContext().getRealPath("/images");
 			//String tmp = ServletActionContext.getServletContext().getContextPath();
 			
-			int rnd = Math.abs(new Random().nextInt());
+			String rnd = generarIdFoto();
 			this.tmpFileName = tmpFolder + rnd;
 			File theFile = new File(tmpFileName);
 			FileUtils.copyFile(this.upload, theFile);
@@ -62,5 +65,15 @@ public class SubirFoto extends ActionSupport{
 
 	public void setFotoContentType(String uploadContentType) {
 		this.uploadContentType = uploadContentType;
+	}
+	
+	private String generarIdFoto(){
+		UUID uuid = UUID.randomUUID();
+		ByteBuffer bb = ByteBuffer.wrap(new byte[16]);
+	    bb.putLong(uuid.getMostSignificantBits());
+	    bb.putLong(uuid.getLeastSignificantBits());
+	    String result = Base64.encodeBase64URLSafeString(bb.array());
+	    //System.out.println("Java UUID: " + uuid +", en Base64: " + result);
+	    return result;
 	}
 }

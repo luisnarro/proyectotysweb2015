@@ -33,13 +33,13 @@ public class DAOAnuncio {
 		}
 	}
 
-	public static int addFoto(Anuncio anuncio, int identificador, String uploadContentType) throws SQLException, Exception {
+	public static int addFoto(Anuncio anuncio, String identificador, String uploadContentType) throws SQLException, Exception {
 		Conexion bd = Broker.get().getConnectionInsercion();
 		try{
 			String sql="{call addFoto (?, ?, ?, ?)}";
 			CallableStatement cs=bd.prepareCall(sql);
 			cs.setInt(1, anuncio.getIdAnuncio());
-			cs.setInt(2, identificador);
+			cs.setString(2, identificador);
 			cs.setString(3, uploadContentType);
 			cs.registerOutParameter(4, java.sql.Types.INTEGER);
 			cs.executeUpdate();
