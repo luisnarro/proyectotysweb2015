@@ -62,9 +62,8 @@ public class Anuncio {
 		this.idAnunciante = idAnunciante;
 	}
 
-	public void addFoto(String filePath, String uploadContentType) {
-		// TO-DO
-		
+	public int addFoto(int identificador, String uploadContentType) throws SQLException, Exception {
+		return DAOAnuncio.addFoto(this, identificador, uploadContentType);
 	}
 
 }

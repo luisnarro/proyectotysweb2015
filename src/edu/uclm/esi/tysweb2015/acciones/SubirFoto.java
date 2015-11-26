@@ -5,7 +5,8 @@ import java.util.Random;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.struts2.ServletActionContext;
-import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -17,13 +18,14 @@ public class SubirFoto extends ActionSupport{
 	private String tmpFileName;
 	private String resultado;
 	private File upload;
+	private int idFoto;
 	
 	public String execute(){
 		try{
-			//String tmpFolder=System.getProperty("java.io.tmpdir");
+			String tmpFolder=System.getProperty("java.io.tmpdir");
 			//String tmpFolder = ServletActionContext.getServletContext().getRealPath("/images");
-			String tmp = ServletActionContext.getServletContext().getContextPath();
-			String tmpFolder = tmp + "/WebContent/WEB-INF/";
+			//String tmp = ServletActionContext.getServletContext().getContextPath();
+			
 			int rnd = Math.abs(new Random().nextInt());
 			this.tmpFileName = tmpFolder + rnd;
 			File theFile = new File(tmpFileName);
@@ -33,9 +35,8 @@ public class SubirFoto extends ActionSupport{
 			Anuncio anuncio = (Anuncio) ServletActionContext.getRequest().getSession().getAttribute("anuncio");
 			
 			//Añadir la foto al anuncio mediante un método (anuncio.addFoto(theFile, this.uploadContentType))
-			//anuncio.addFoto(tmpFileName, this.uploadContentType);
+			this.idFoto = anuncio.addFoto(rnd, this.uploadContentType);
 			
-			this.resultado="OK";
 			return SUCCESS;
 		}catch(Exception e){
 			this.resultado=e.getMessage();
@@ -44,7 +45,15 @@ public class SubirFoto extends ActionSupport{
 	}
 
 	public String getResultado() {
-		return resultado;
+		JSONObject result=new JSONObject();
+		try {
+			result.put("tipo", "OK");
+			result.put("mensaje", this.idFoto);
+		} catch (JSONException e) {
+			return "Error";
+		}
+		
+		return result.toString();
 	}
 
 	public void setFoto(File upload) {

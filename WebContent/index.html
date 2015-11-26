@@ -2,6 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<script src="https://apis.google.com/js/client:plusone.js"></script >
 <title>Publianuncios</title>
 <style type="text/css">	
 	.celdaRoja{
@@ -13,6 +14,7 @@
 	}
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 <script>
 	$(document).ready(function() {
 		if(sessionStorage.getItem("email")){
@@ -35,6 +37,9 @@
 			</td>
 			<td colspan="2">
 				<span id="datosPersonales">Datos</span>
+				<div id="signin-button">
+					<div class="g-signin" data-callback="GoogleLogin" data-approvalprompt="force" data-clientid="353845812738-6tjfl6b6crcuri7mrfqugb4dte5gbsnb" data-scope="https://www.googleapis.com/auth/plus.login" data-cookiepolicy="single_host_origin"></div>
+				</div>
 			</td>
 		</tr>
 		<tr>
@@ -62,6 +67,22 @@
 	</table>
 	
 	<script>
+	
+	// Peticiónes a servidores o servicios externos (Clase 25/11)
+	/*var requestExterno = new XMLHttpRequest();
+	requestExterno.open("GET", "http://www.html5rocks.com/en/");
+	requestExterno.onreadystatechange=function(){
+		if (requestExterno.readyState==4){
+			if(requestExterno.status==200){
+				alert("Respuesta Recibida");
+			} else{
+				alert("Error con recurso externo: " + requestExterno.responseText);
+			}
+		}
+	};
+	requestExterno.send();*/
+	
+	
 		var request = new XMLHttpRequest();
 		request.open("GET", "getCategorias.jsp");
 		request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -156,6 +177,19 @@
 			etiquetaDescripcion.innerHTML=this.descripcion;
 			result.appendChild(etiquetaDescripcion);
 			return result;
+		}
+		
+		// Google Login
+		function GoogleLogin(respuesta){
+			if(respuesta['status']['signed_in']){
+				gapi.client.load('plus','v1',function(){
+					var request=gapi.client.plus.people.get({'userId':'me'}).execute(function(info){
+						alert("Bienvenido " + info.displayName);
+						$('Nombre').html(info.displayName);
+						$('#URL').html(info.url);
+					});
+				});
+			}
 		}
 	</script>
 </body>

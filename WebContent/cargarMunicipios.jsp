@@ -2,6 +2,8 @@
     pageEncoding="ISO-8859-1"%>
 <%@ page import="edu.uclm.esi.tysweb2015.dao.*,java.sql.*, org.json.*" %>
 
+<% response.setHeader("Access-Control-Allow-Origin", "*"); %>
+
 <%
 String sProvincia = request.getParameter("Provincia");
 int provincia = Integer.parseInt(sProvincia);
