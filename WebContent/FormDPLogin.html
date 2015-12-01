@@ -1,3 +1,4 @@
+<script src="https://apis.google.com/js/platform.js" async defer></script>
 <label>email</label><input type="email" size="30" maxlength="40" id="email"><br>
 <label>password</label><input type="password" size="30" maxlength="40" id="password"><br>
 
@@ -30,6 +31,13 @@ function identificar(){
 	var uri = encodeURI(pars);
 	req.send(uri);
 	
+	function onSignIn(googleUser) {
+		var profile = googleUser.getBasicProfile();
+		console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+		console.log('Name: ' + profile.getName());
+		console.log('Image URL: ' + profile.getImageUrl());
+		console.log('Email: ' + profile.getEmail());
+	}
 }
 
 function recordarPassword(){
@@ -41,3 +49,7 @@ function recordarPassword(){
 
 <button type="submit" onclick="identificar()">Entrar</button><br>
 <a id="recordarPwd" href="javascript:recordarPassword()">¡Olvidé la contraseña!</a>
+
+<p>
+	<div class="g-signin2" data-onsuccess="onSignIn"></div>
+</p>

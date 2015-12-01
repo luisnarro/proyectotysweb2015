@@ -2,6 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="google-signin-client_id" content="353845812738-6tjfl6b6crcuri7mrfqugb4dte5gbsnb.apps.googleusercontent.com">
 <script src="https://apis.google.com/js/client:plusone.js"></script >
 <title>Publianuncios</title>
 <style type="text/css">	
@@ -37,9 +38,6 @@
 			</td>
 			<td colspan="2">
 				<span id="datosPersonales">Datos</span>
-				<div id="signin-button">
-					<div class="g-signin" data-callback="GoogleLogin" data-approvalprompt="force" data-clientid="353845812738-6tjfl6b6crcuri7mrfqugb4dte5gbsnb" data-scope="https://www.googleapis.com/auth/plus.login" data-cookiepolicy="single_host_origin"></div>
-				</div>
 			</td>
 		</tr>
 		<tr>
@@ -177,19 +175,6 @@
 			etiquetaDescripcion.innerHTML=this.descripcion;
 			result.appendChild(etiquetaDescripcion);
 			return result;
-		}
-		
-		// Google Login
-		function GoogleLogin(respuesta){
-			if(respuesta['status']['signed_in']){
-				gapi.client.load('plus','v1',function(){
-					var request=gapi.client.plus.people.get({'userId':'me'}).execute(function(info){
-						alert("Bienvenido " + info.displayName);
-						$('Nombre').html(info.displayName);
-						$('#URL').html(info.url);
-					});
-				});
-			}
 		}
 	</script>
 </body>
