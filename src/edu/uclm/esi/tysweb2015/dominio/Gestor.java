@@ -59,4 +59,17 @@ public class Gestor {
 		
 	}
 
+	public Usuario registrarUsuarioGoogle(String email) throws Exception {
+		Usuario usuario = new Usuario(email);
+		usuario.insert(2);
+		return usuario;
+	}
+
+	public Usuario existeUsuarioGoogle(String email) throws SQLException, Exception {
+		Usuario result = null;
+		Usuario usuario = new Usuario(email);
+		result = usuario.existeUsuarioGoogle();
+		return result;
+	}
+
 }

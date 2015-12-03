@@ -1,4 +1,8 @@
+<head>
+<meta name="google-signin-client_id" content="353845812738-6tjfl6b6crcuri7mrfqugb4dte5gbsnb.apps.googleusercontent.com">
 <script src="https://apis.google.com/js/platform.js" async defer></script>
+</head>
+
 <label>email</label><input type="email" size="30" maxlength="40" id="email"><br>
 <label>password</label><input type="password" size="30" maxlength="40" id="password"><br>
 
@@ -14,6 +18,7 @@ function identificar(){
 				respuesta = JSON.parse(respuesta);
 				if (respuesta.resultado=="OK"){
 					sessionStorage.setItem("email", document.getElementById("email").value);
+					//enviarDatosAlServidorDePublicidad(sessionStorage.getItem("email"));
 					$('#datosPersonales').load('FormDPSesion.html');
 				} else {
 					alert(respuesta.resultado);
@@ -30,18 +35,65 @@ function identificar(){
 	var pars = "email="+email+"&pwd="+pwd;
 	var uri = encodeURI(pars);
 	req.send(uri);
-	
-	function onSignIn(googleUser) {
-		var profile = googleUser.getBasicProfile();
-		console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-		console.log('Name: ' + profile.getName());
-		console.log('Image URL: ' + profile.getImageUrl());
-		console.log('Email: ' + profile.getEmail());
-	}
 }
 
 function recordarPassword(){
 	$('#datosPersonales').load('FormRecordarPwd.html');
+}
+
+function enviarDatosAlServidorDePublicidad(login){
+	var request = new XMLHttpRequest();
+	request.open("POST", "http://localhost:8085/CentroDePublicidad/recibirPreferencia.jsp");
+	request.withCredentials=true;
+	request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	request.send("preferencia=" + login);
+}
+
+//AutenticacionConGoogle
+function onSignIn(googleUser) {
+	var profile = googleUser.getBasicProfile();
+	console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+	console.log('Name: ' + profile.getName());
+	console.log('Image URL: ' + profile.getImageUrl());
+	console.log('Email: ' + profile.getEmail());
+	//var id_token = googleUser.getAuthResponse().id_token;
+	//sendToken(id_token);
+	registrarUsuarioGoogle(profile.getEmail());
+}
+
+function sendToken(id_token){
+	var xhr = new XMLHttpRequest();
+	xhr.open('POST', 'GoogleLogin.action');
+	xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+	xhr.onload = function() {
+	  console.log('Signed in as: ' + xhr.responseText);
+	};
+	xhr.send('idtoken=' + id_token);
+}
+
+function registrarUsuarioGoogle(email){
+	var req = new XMLHttpRequest();
+	req.open("POST", "RegistrarUsuarioGoogle.action")
+	req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	req.onreadystatechange=function(){
+		if (req.readyState==4) {
+			if (req.status==200){
+				var respuesta = JSON.parse(req.responseText);
+				respuesta = JSON.parse(respuesta.resultado);
+				if (respuesta.resultado=="OK"){
+					var usuario = respuesta.usuario;
+					sessionStorage.setItem("email", usuario);
+					$('#datosPersonales').load('FormDPSesion.html');
+				} else {
+					alert(respuesta.resultado);
+				}
+			}else {
+				alert("Error. "+ request.statusText);
+			}
+		}
+	};
+	var pars = "email="+email;
+	req.send(pars);
 }
 
 
@@ -49,6 +101,8 @@ function recordarPassword(){
 
 <button type="submit" onclick="identificar()">Entrar</button><br>
 <a id="recordarPwd" href="javascript:recordarPassword()">¡Olvidé la contraseña!</a>
+
+<!-- <iframe id="anuncio" src="http://localhost:8085/CentroDePublicidad/enviarAnuncio.jsp"></iframe> -->
 
 <p>
 	<div class="g-signin2" data-onsuccess="onSignIn"></div>

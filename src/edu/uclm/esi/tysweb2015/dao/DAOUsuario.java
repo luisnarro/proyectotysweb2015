@@ -11,23 +11,37 @@ import edu.uclm.esi.tysweb2015.dominio.Usuario;
 
 public class DAOUsuario {
 
-	public static void insert(Usuario usuario) throws SQLException, Exception {
+	public static void insert(Usuario usuario, int... tipoDeOAuth) throws SQLException, Exception {
 		Conexion bd = Broker.get().getConnectionInsercion();
+		
 		try{
-			String sql="{call insertarUsuario (?, ?, ?, ?, ?, ?, ?, ?)}";
-			CallableStatement cs=bd.prepareCall(sql);
-			cs.setString(1, usuario.getEmail());
-			cs.setString(2, usuario.getPwd());
-			cs.setString(3, usuario.getNombre());
-			cs.setString(4, usuario.getApellido1());
-			cs.setString(5, usuario.getApellido2());
-			cs.setString(6, usuario.getTelefono());
-			cs.setInt(7, usuario.getIdUbicacion());
-			cs.registerOutParameter(8, java.sql.Types.VARCHAR);
-			cs.executeUpdate();
-			String exito=cs.getString(8);
-			if (exito!=null && !(exito.equals("OK")))
-				throw new SQLException(exito);
+			if (tipoDeOAuth.length==0){
+				String sql="{call insertarUsuario (?, ?, ?, ?, ?, ?, ?, ?)}";
+				CallableStatement cs=bd.prepareCall(sql);
+				cs.setString(1, usuario.getEmail());
+				cs.setString(2, usuario.getPwd());
+				cs.setString(3, usuario.getNombre());
+				cs.setString(4, usuario.getApellido1());
+				cs.setString(5, usuario.getApellido2());
+				cs.setString(6, usuario.getTelefono());
+				cs.setInt(7, usuario.getIdUbicacion());
+				cs.registerOutParameter(8, java.sql.Types.VARCHAR);
+				cs.executeUpdate();
+				String exito=cs.getString(8);
+				if (exito!=null && !(exito.equals("OK")))
+					throw new SQLException(exito);
+			} else {
+				String sql="{call insertarUsuarioOAuth (?, ?, ?)}";
+				CallableStatement cs=bd.prepareCall(sql);
+				cs.setString(1, usuario.getEmail());
+				cs.setInt(2, tipoDeOAuth[0]);
+				cs.registerOutParameter(3, java.sql.Types.VARCHAR);
+				cs.executeUpdate();
+				String exito=cs.getString(3);
+				if (exito!=null && !(exito.equals("OK")))
+					throw new SQLException(exito);
+			}
+			
 		}
 		catch(Exception e){
 			throw e;
@@ -40,7 +54,7 @@ public class DAOUsuario {
 	public static void identificar(Usuario usuario, String email, String pwd) throws SQLException, Exception {
 		Conexion bd = Broker.get().getConnectionSeleccion();
 		try{
-			String sql= "SELECT id, nombre, apellido1, apellido2, telefono, idUbicacion FROM Usuarios where email=?";
+			String sql= "SELECT id, nombre, apellido1, apellido2, telefono, idUbicacion, accesoGoogle FROM Usuarios where email=?";
 			PreparedStatement p = bd.prepareStatement(sql);
 			p.setString(1, email);
 			ResultSet rs = p.executeQuery();
@@ -51,6 +65,7 @@ public class DAOUsuario {
 				String apellido2 = rs.getString(4);
 				String telefono = rs.getString(5);
 				int idubicacion = rs.getInt(6);
+				int tipoOAuth = rs.getInt(7);
 				String userName = "tysweb2015" + id;
 				
 				if (Broker.get().existe(email, pwd)){
@@ -62,6 +77,7 @@ public class DAOUsuario {
 					usuario.setTelefono(telefono);
 					usuario.setPwd1(pwd);
 					usuario.setIdUbicacion(idubicacion);
+					usuario.setTipoDeOAuth(tipoOAuth);
 					//usuario = new Usuario(email, nombre, apellido1, apellido2, telefono, pwd, idubicacion);
 					//usuario.setConnection(bdUsuario);
 				}
@@ -109,5 +125,29 @@ public class DAOUsuario {
 		finally{
 			bd.close();
 		}
+	}
+
+	public static boolean existeUsuarioGoogle(Usuario usuario) throws SQLException, Exception {
+		boolean result = false;
+		Conexion bd = Broker.get().getConnectionSeleccion();
+		try{
+			String sql= "SELECT id, accesoGoogle FROM Usuarios where email=?";
+			PreparedStatement p = bd.prepareStatement(sql);
+			p.setString(1, usuario.getEmail());
+			ResultSet rs = p.executeQuery();
+			boolean r = rs.next();
+			if (r){
+				result = true;
+				usuario.setTipoDeOAuth(rs.getInt(2));
+			}
+			
+		}
+		catch(Exception e){
+			throw e;
+		}
+		finally{
+			bd.close();
+		}
+		return result;
 	}
 }

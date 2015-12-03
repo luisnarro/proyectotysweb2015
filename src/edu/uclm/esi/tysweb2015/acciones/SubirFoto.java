@@ -26,12 +26,14 @@ public class SubirFoto extends ActionSupport{
 	public String execute(){
 		try{
 			String tmpFolder=System.getProperty("java.io.tmpdir");
+			String path = "C:\\Users\\LuisNarro\\Documents\\eclipseWTPworkspace\\proyectoTySW\\WebContent\\images\\";
 			//String tmpFolder = ServletActionContext.getServletContext().getRealPath("/images");
 			//String tmp = ServletActionContext.getServletContext().getContextPath();
 			
 			String rnd = generarIdFoto();
-			this.tmpFileName = tmpFolder + rnd;
-			File theFile = new File(tmpFileName);
+			String formato = "."+uploadContentType.split("/")[1];
+			this.tmpFileName = path + rnd;
+			File theFile = new File(tmpFileName + formato);
 			FileUtils.copyFile(this.upload, theFile);
 			
 			//Recuperar el anuncio de la sesión (se ha puesto al subir el anuncio)

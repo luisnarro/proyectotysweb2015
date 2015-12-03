@@ -23,10 +23,9 @@
 </form>
 </p>
 
+<div id="areaFotos"></div>
+
 <button type="button" id="chatEnviar" onclick="enviarMensaje()">Chat</button><br>
-<div>
-	<img src="images/18556705.jpg" alt="imagenAnuncio" style="width:228px;height:228px;">
-</div>
 
 <script>
 var request = new XMLHttpRequest();
@@ -92,14 +91,54 @@ function subirFoto(){
 				var respuesta = req.responseText;
 				respuesta = JSON.parse(respuesta);
 				//progreso.innerHTML="Foto subida correctamente con Id= "+ respuesta.mensaje;
-				//mostrarFoto();
-				alert(respuesta.resultado);
+				alert(respuesta);
+				mostrarFotos();
 			}else {
 				alert("Error. "+ request.statusText);
 			}
 		}
 	};
 	req.send(formData);
+}
+
+function mostrarFotos(){
+	var areaFotos = document.getElementById("areaFotos");
+	areaFotos.innerHTML="";
+	// Lamada a archivo jsp que devuelva los nombres de las fotos del anuncio actual (está en la sesión).
+	var req = new XMLHttpRequest();
+	req.open("GET", "getFotos.jsp")
+	req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	req.onreadystatechange=function(){
+		if (req.readyState==4) {
+			if (req.status==200){
+				var respuesta = req.responseText;
+				respuesta = JSON.parse(respuesta);
+				if (respuesta.resultado=="OK"){					
+					//alert(respuesta.anuncio);
+					var tabla = document.createElement("table");
+					tabla.setAttribute("id", "tablaFotos");
+					var tr = document.createElement("tr");
+					for (var i=0; i<respuesta.anuncios.length; i++){
+						var td = document.createElement("td");
+						var img = document.createElement("img");
+						img.setAttribute("src", "images\\"+respuesta.anuncios[i].anuncio);
+						img.setAttribute("alt", "fotoAnuncio");
+						img.setAttribute("style", "width:304px;height:228px;");
+						td.appendChild(img);
+						tr.appendChild(td);
+						tabla.appendChild(tr);
+						areaFotos.appendChild(tabla);
+					}
+					
+				} else {
+					alert(respuesta.resultado + ": " + respuesta.tipo);
+				}
+			}else {
+				alert("Error. "+ req.statusText);
+			}
+		}
+	};
+	req.send();
 }
 
 function insertarAnuncio(){

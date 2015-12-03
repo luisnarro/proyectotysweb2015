@@ -41,5 +41,17 @@
 			<result name="error" type="json"></result>
 			<result name="input" type="json"></result>
 		</action>
+		
+		<action name="GoogleLogin" class="edu.uclm.esi.tysweb2015.acciones.GoogleLogin">
+			<result name="success" type="json"></result>
+			<result name="error" type="json"></result>
+			<result name="input" type="json"></result>
+		</action>
+		
+		<action name="RegistrarUsuarioGoogle" class="edu.uclm.esi.tysweb2015.acciones.RegistrarUsuarioGoogle">
+			<result name="success" type="json"></result>
+			<result name="error" type="json"></result>
+			<result name="input" type="json"></result>
+		</action>
 	</package>
 </struts>

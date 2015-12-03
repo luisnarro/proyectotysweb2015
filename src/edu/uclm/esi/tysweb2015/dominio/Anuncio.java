@@ -2,6 +2,8 @@ package edu.uclm.esi.tysweb2015.dominio;
 
 import java.io.File;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Hashtable;
 
 import edu.uclm.esi.tysweb2015.dao.DAOAnuncio;
 
@@ -11,6 +13,8 @@ public class Anuncio {
 	private int fechaAlta;
 	private int idCategoria;
 	private int idAnunciante;
+	//private ArrayList<String> fotos = new ArrayList<String>();
+	private Hashtable<String,String> fotos = new Hashtable<String,String>();
 	
 	public Anuncio(){
 		
@@ -61,9 +65,15 @@ public class Anuncio {
 	public void setIdAnunciante(int idAnunciante) {
 		this.idAnunciante = idAnunciante;
 	}
+	public Hashtable<String, String> getFotos() {
+		return fotos;
+	}
 
 	public int addFoto(String identificador, String uploadContentType) throws SQLException, Exception {
-		return DAOAnuncio.addFoto(this, identificador, uploadContentType);
+		int result;
+		result = DAOAnuncio.addFoto(this, identificador, uploadContentType);
+		this.fotos.put(identificador, uploadContentType);
+		return result;
 	}
 
 }

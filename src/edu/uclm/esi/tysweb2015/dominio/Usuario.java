@@ -17,6 +17,7 @@ public class Usuario {
 	private String pwd1;
 	private int idUbicacion;
 	//private Connection bd;
+	private int tipoDeOAuth;
 	private ArrayList<Anuncio> anuncios = new ArrayList<Anuncio>();
 	
 	public Usuario() {
@@ -39,8 +40,13 @@ public class Usuario {
 		recuperarAnuncios();
 	}
 
-	public void insert() throws Exception {
-		DAOUsuario.insert(this);		
+	public Usuario(String email) {
+		this.email = email;
+	}
+
+	public void insert(int... tipoDeOAuth) throws Exception {
+		this.tipoDeOAuth = tipoDeOAuth[0];
+		DAOUsuario.insert(this, tipoDeOAuth);		
 	}
 	
 	public void recuperarAnuncios() throws SQLException, Exception {
@@ -78,6 +84,11 @@ public class Usuario {
 	public void setIdUsuario(int id) {
 		this.idUsuario=id;
 	}
+	
+	public void setTipoDeOAuth(int tipoOAuth) {
+		this.tipoDeOAuth=tipoOAuth;
+		
+	}
 
 	public String getEmail() {
 		return email;
@@ -111,6 +122,10 @@ public class Usuario {
 		return idUsuario;
 	}
 	
+	public int getTipoDeOAuth(){
+		return tipoDeOAuth;
+	}
+	
 	public ArrayList<Anuncio> getAnuncios() {
 		return anuncios;
 	}
@@ -125,6 +140,14 @@ public class Usuario {
 	public void setAnuncio(Anuncio anuncio){
 		Anuncio anuncioMin = new Anuncio(anuncio.getIdAnuncio(), anuncio.getDescripcion());
 		this.anuncios.add(anuncioMin);
+	}
+
+	public Usuario existeUsuarioGoogle() throws SQLException, Exception {
+		Usuario result = null;
+		if(DAOUsuario.existeUsuarioGoogle(this)){
+			result = this;
+		}
+		return result;
 	}
 
 }

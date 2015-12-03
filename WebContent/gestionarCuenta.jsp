@@ -6,7 +6,7 @@
 	Usuario usuario = (Usuario)request.getSession().getAttribute("usuario");
 	JSONObject jso=new JSONObject();
 	
-	if (usuario.getApellido1() != null){
+	if (usuario.getApellido1() != null && (usuario.getTipoDeOAuth() == 1)){
 		jso.put("resultado", "OK");
 		jso.put("nombre", usuario.getNombre());
 		jso.put("apellido1", usuario.getApellido1());
@@ -15,7 +15,13 @@
 		jso.put("email", usuario.getEmail());
 		jso.put("anuncios", usuario.getAnuncios());
 	}else{
-		jso.put("resultado", "Error");
+		if (usuario.getTipoDeOAuth() > 1){
+			jso.put("resultado", "Advertencia");
+			jso.put("tipo", "Información del usuario de Google+ no disponible");
+		}else{
+			jso.put("resultado", "Error");
+			jso.put("tipo", "");
+		}
 	}
 %>
 
