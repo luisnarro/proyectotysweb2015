@@ -118,10 +118,10 @@ function mostrarFotos(){
 					var tabla = document.createElement("table");
 					tabla.setAttribute("id", "tablaFotos");
 					var tr = document.createElement("tr");
-					for (var i=0; i<respuesta.anuncios.length; i++){
+					for (var i=0; i<respuesta.fotos.length; i++){
 						var td = document.createElement("td");
 						var img = document.createElement("img");
-						img.setAttribute("src", "images\\"+respuesta.anuncios[i].anuncio);
+						img.setAttribute("src", "images\\"+respuesta.fotos[i].foto);
 						img.setAttribute("alt", "fotoAnuncio");
 						img.setAttribute("style", "width:304px;height:228px;");
 						td.appendChild(img);

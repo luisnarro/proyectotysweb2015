@@ -36,6 +36,7 @@ function cargarDatosPersonales(){
 					document.getElementById("apellido1").value = respuesta.apellido1;
 					document.getElementById("apellido2").value = respuesta.apellido2;
 					document.getElementById("telefono").value = respuesta.telefono;
+					var idUsuario = respuesta.idUsuario;
 					
 					var anuncios = respuesta.anuncios;
 					var areaAnuncios = document.getElementById("areaAnunciosUsuario");
@@ -57,7 +58,7 @@ function cargarDatosPersonales(){
 								span.setAttribute("id", anuncioID);
 								span.setAttribute("class", "spanAnuncio");
 								var enlace=document.createElement("a");
-								enlace.setAttribute("href", "javascript:cargarGestionAnuncio("+anuncioID+")");
+								enlace.setAttribute("href", "javascript:cargarGestionAnuncio("+anuncioID+","+idUsuario+")");
 								enlace.innerHTML=anuncios[cont].descripcion;
 								//var etiquetaDescripcion=document.createElement("label");
 								//etiquetaDescripcion.innerHTML=anuncios[cont].descripcion;
@@ -78,12 +79,44 @@ function cargarDatosPersonales(){
 	req.send();
 }
 
-function cargarGestionAnuncio(idAnuncio){
+function cargarGestionAnuncio(idAnuncio, idUsuario){
 	//$('#areaPrincipal').load('FormGestionarAnuncio.html?id='+idAnuncio);
 	//Limpiar #areaPrincipal y poner los elementos de FormGestionarAnuncio utilizando el DOM.
-	//Después recuperar el anuncio con 'idAnuncio' y rellenar los elementos con la información.
+	//Después recuperar el anuncio con 'idAnuncio' e 'idUsuario' (para que sólo el propietario del
+	//anuncio pueda gestionarlo) mediante una acción y rellenar los elementos con la información.
 	var areaAnuncios = document.getElementById("areaPrincipal");
-	areaPrincipal.innerHTML="";
+	areaAnuncios.innerHTML="";
+	var div = document.createElement("div");
+	div.setAttribute("id", "fotosView");
+	areaAnuncios.appendChild(div);
+	
+	var req = new XMLHttpRequest();
+	req.open("POST", "RecuperarAnuncioUsuario.action")
+	req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	req.onreadystatechange=function(){
+		if (req.readyState==4) {
+			if (req.status==200){
+				var respuesta = req.responseText;
+				respuesta = JSON.parse(respuesta);
+				var anuncio = JSON.parse(respuesta.resultado);
+				if (anuncio.resultado=="OK"){
+					var img = document.createElement("img");
+					img.setAttribute("alt", "FotoAnuncio");
+					img.setAttribute("src", "images\\"+anuncio.fotos[0].foto);
+					img.setAttribute("style", "width:220px;height:220px;");
+					div.appendChild(img);
+					//alert(anuncio.fotos[0].foto);
+				} else {
+					alert(respuesta);
+				}
+			}else {
+				alert("Error. "+ req.statusText);
+			}
+		}
+	};
+	var pars = "idAnuncio="+idAnuncio+"&idUsuario="+idUsuario;
+	var uri = encodeURI(pars);
+	req.send(uri);
 }
 
 function volver(){

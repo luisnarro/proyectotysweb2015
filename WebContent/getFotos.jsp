@@ -9,16 +9,14 @@
 	if (anuncio.getIdAnuncio() > 0){
 		Hashtable<String,String> anuncios = anuncio.getFotos();
 		Set<String> keys = anuncios.keySet();
-		String formato = "";
 		JSONArray jsa = new JSONArray();
 		result.put("resultado", "OK");
 		for(String key: keys){
 			JSONObject jso=new JSONObject();
-			formato = anuncios.get(key).split("/")[1];
-            jso.put("anuncio",key+"."+formato);
+            jso.put("foto",anuncios.get(key));
             jsa.put(jso);
         }
-		result.put("anuncios", jsa);
+		result.put("fotos", jsa);
 	}else{
 		result.put("resultado", "Error");
 		result.put("tipo", "");

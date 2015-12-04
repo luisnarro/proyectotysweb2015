@@ -53,5 +53,11 @@
 			<result name="error" type="json"></result>
 			<result name="input" type="json"></result>
 		</action>
+		
+		<action name="RecuperarAnuncioUsuario" class="edu.uclm.esi.tysweb2015.acciones.RecuperarAnuncioUsuario">
+			<result name="success" type="json"></result>
+			<result name="error" type="json"></result>
+			<result name="input" type="json"></result>
+		</action>
 	</package>
 </struts>

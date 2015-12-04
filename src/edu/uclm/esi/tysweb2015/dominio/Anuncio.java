@@ -13,7 +13,6 @@ public class Anuncio {
 	private int fechaAlta;
 	private int idCategoria;
 	private int idAnunciante;
-	//private ArrayList<String> fotos = new ArrayList<String>();
 	private Hashtable<String,String> fotos = new Hashtable<String,String>();
 	
 	public Anuncio(){
@@ -29,6 +28,11 @@ public class Anuncio {
 	public Anuncio(int idAnuncio, String descripcion) {
 		this.idAnuncio = idAnuncio;
 		this.descripcion = descripcion;
+	}
+
+	public Anuncio(int idAnuncio, int idUsuario) {
+		this.idAnuncio = idAnuncio;
+		this.idAnunciante = idUsuario;
 	}
 
 	public void insert() throws Exception {
@@ -69,11 +73,20 @@ public class Anuncio {
 		return fotos;
 	}
 
-	public int addFoto(String identificador, String uploadContentType) throws SQLException, Exception {
+	public void addFoto(String identificador, String uploadContentType) throws SQLException, Exception {
 		int result;
 		result = DAOAnuncio.addFoto(this, identificador, uploadContentType);
-		this.fotos.put(identificador, uploadContentType);
-		return result;
+		String formato = uploadContentType.split("/")[1];
+		this.fotos.put(Integer.toString(result), identificador+"."+formato);
+	}
+
+	public Anuncio recuperar() throws SQLException, Exception {
+		DAOAnuncio.recuperar(this);
+		return this;
+	}
+
+	public void recuperarFotos() throws SQLException, Exception {
+		DAOAnuncio.recuperarFotos(this);		
 	}
 
 }

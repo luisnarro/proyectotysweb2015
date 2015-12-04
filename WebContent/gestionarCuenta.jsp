@@ -8,6 +8,7 @@
 	
 	if (usuario.getApellido1() != null && (usuario.getTipoDeOAuth() == 1)){
 		jso.put("resultado", "OK");
+		jso.put("idUsuario", usuario.getIdUusuario());
 		jso.put("nombre", usuario.getNombre());
 		jso.put("apellido1", usuario.getApellido1());
 		jso.put("apellido2", usuario.getApellido2());

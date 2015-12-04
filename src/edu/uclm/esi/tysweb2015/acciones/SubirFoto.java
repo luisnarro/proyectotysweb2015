@@ -2,7 +2,6 @@ package edu.uclm.esi.tysweb2015.acciones;
 
 import java.io.File;
 import java.nio.ByteBuffer;
-import java.util.Random;
 import java.util.UUID;
 
 import org.apache.commons.codec.binary.Base64;
@@ -21,7 +20,6 @@ public class SubirFoto extends ActionSupport{
 	private String tmpFileName;
 	private String resultado;
 	private File upload;
-	private int idFoto;
 	
 	public String execute(){
 		try{
@@ -40,7 +38,7 @@ public class SubirFoto extends ActionSupport{
 			Anuncio anuncio = (Anuncio) ServletActionContext.getRequest().getSession().getAttribute("anuncio");
 			
 			//Añadir la foto al anuncio mediante un método (anuncio.addFoto(theFile, this.uploadContentType))
-			this.idFoto = anuncio.addFoto(rnd, this.uploadContentType);
+			anuncio.addFoto(rnd, this.uploadContentType);
 			
 			return SUCCESS;
 		}catch(Exception e){
@@ -53,7 +51,6 @@ public class SubirFoto extends ActionSupport{
 		JSONObject result=new JSONObject();
 		try {
 			result.put("tipo", "OK");
-			result.put("mensaje", this.idFoto);
 		} catch (JSONException e) {
 			return "Error";
 		}

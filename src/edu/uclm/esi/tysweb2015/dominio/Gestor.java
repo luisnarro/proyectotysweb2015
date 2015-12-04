@@ -72,4 +72,12 @@ public class Gestor {
 		return result;
 	}
 
+	public Anuncio recuperarAnuncioUsuario(int idAnuncio, int idUsuario) throws SQLException, Exception {
+		Anuncio result;
+		Anuncio anuncio = new Anuncio(idAnuncio, idUsuario);
+		result = anuncio.recuperar();
+		return result;
+		
+	}
+
 }
