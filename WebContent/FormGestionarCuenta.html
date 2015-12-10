@@ -12,6 +12,11 @@
 </p>
 <span id="areaAnunciosUsuario"></span>
 
+<div id="datosAnuncio" style="display: none">
+	<label>Descripcion</label><textarea cols="30" rows="5" id="descripcion" readonly></textarea><br>
+	<label>ID categoría</label><input type="text" size="30" maxlength="40" id="idCategoria" readonly><br>
+</div>
+
 <script>
 $(document).ready(function() {
 	$('#nuevoAnuncio').click(function() {
@@ -100,6 +105,9 @@ function cargarGestionAnuncio(idAnuncio, idUsuario){
 				respuesta = JSON.parse(respuesta);
 				var anuncio = JSON.parse(respuesta.resultado);
 				if (anuncio.resultado=="OK"){
+					document.getElementById("descripcion").innerHTML = anuncio.descripcion;
+					document.getElementById("idCategoria").innerHTML = anuncio.categoria;
+					document.getElementById("datosAnuncio").style.display = "block";
 					var img = document.createElement("img");
 					img.setAttribute("alt", "FotoAnuncio");
 					img.setAttribute("src", "images\\"+anuncio.fotos[0].foto);
