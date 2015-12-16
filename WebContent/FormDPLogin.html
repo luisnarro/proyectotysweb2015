@@ -20,6 +20,7 @@ function identificar(){
 					sessionStorage.setItem("email", document.getElementById("email").value);
 					//enviarDatosAlServidorDePublicidad(sessionStorage.getItem("email"));
 					$('#datosPersonales').load('FormDPSesion.html');
+					$('#areaPrincipal').load('FormGestionarCuenta.html');
 				} else {
 					alert(respuesta.resultado);
 				}

@@ -19,6 +19,7 @@
 	$(document).ready(function() {
 		if(sessionStorage.getItem("email")){
 			$('#datosPersonales').load('FormDPSesion.html');
+			$('#areaPrincipal').load('FormGestionarCuenta.html');
 		}else{
 			$('#datosPersonales').load('FormDPDesconectado.html');
 		}

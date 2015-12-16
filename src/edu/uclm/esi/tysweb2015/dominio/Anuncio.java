@@ -72,6 +72,9 @@ public class Anuncio {
 	public Hashtable<String, String> getFotos() {
 		return fotos;
 	}
+	public void addFotoAlArray(String key, String value){
+		this.fotos.put(key, value);
+	}
 
 	public void addFoto(String identificador, String uploadContentType) throws SQLException, Exception {
 		int result;

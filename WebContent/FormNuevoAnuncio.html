@@ -20,13 +20,21 @@
 	<label for="foto">Fotos:</label><input type="file" id="foto" name="foto" accept="image/*">
 	<br>
 	<button type="button" id="guardar" onclick="subirFoto()">Subir</button>
+	<div></div>
+	<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+		<input type="hidden" name="cmd" value="_s-xclick">
+		<input type="hidden" name="hosted_button_id" value="V7C6EKPGV95MJ">
+		<input type="image" src="https://www.paypalobjects.com/es_ES/ES/i/btn/btn_buynowCC_LG.gif" border="0" name="submit" alt="PayPal. La forma rápida y segura de pagar en Internet.">
+		<img alt="" border="0" src="https://www.paypalobjects.com/es_ES/i/scr/pixel.gif" width="1" height="1">
+	</form>
+	
 </form>
 </p>
 
 <div id="areaFotos"></div>
 
 <button type="button" id="chatEnviar" onclick="enviarMensaje()">Chat</button><br>
-
+<p><button type="submit" onclick="volver()">Volver</button></p>
 <script>
 var request = new XMLHttpRequest();
 request.open("GET", "getCategorias.jsp");
@@ -123,7 +131,7 @@ function mostrarFotos(){
 						var img = document.createElement("img");
 						img.setAttribute("src", "images\\"+respuesta.fotos[i].foto);
 						img.setAttribute("alt", "fotoAnuncio");
-						img.setAttribute("style", "width:304px;height:228px;");
+						img.setAttribute("style", "width:100px;height:100px;");
 						td.appendChild(img);
 						tr.appendChild(td);
 						tabla.appendChild(tr);
@@ -150,7 +158,7 @@ function insertarAnuncio(){
 			if (req.status==200){
 				var respuesta = req.responseText;
 				respuesta = JSON.parse(respuesta);
-				alert(respuesta.resultado);
+				alert(respuesta.resultado+": Anuncio publicado.");
 				document.getElementById("formFoto").style.display = "block";
 			}else {
 				alert("Error. "+ request.statusText);
@@ -164,5 +172,9 @@ function insertarAnuncio(){
 	var pars = "descripcion="+descripcion+"&categoria="+categoria
 	var uri = encodeURI(pars);
 	req.send(uri);
+}
+
+function volver(){
+	window.location = "index.html";
 }
 </script>

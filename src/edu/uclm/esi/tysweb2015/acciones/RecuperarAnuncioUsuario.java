@@ -39,6 +39,7 @@ public class RecuperarAnuncioUsuario extends ActionSupport{
 			result.put("descripcion", this.anuncio.getDescripcion());
 			result.put("categoria", this.anuncio.getIdCategoria()); //Cambiar; enviar el nombre de la categoría.
 			JSONArray fotosJSA = new JSONArray();
+			JSONArray idesJSA = new JSONArray();
 			Hashtable<String, String> fotos = this.anuncio.getFotos();
 			Set<String> keys = fotos.keySet();
 			for(String key: keys){
@@ -47,6 +48,13 @@ public class RecuperarAnuncioUsuario extends ActionSupport{
 	            fotosJSA.put(jso);
 	        }
 			result.put("fotos", fotosJSA);
+			
+			for (String key: keys){
+				JSONObject jso=new JSONObject();
+	            jso.put("idFoto", key);
+	            idesJSA.put(jso);
+			}
+			result.put("idsFotos", idesJSA);
 			
 		} catch (Exception e) {
 			this.resultado="Error";

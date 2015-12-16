@@ -86,17 +86,19 @@ public class DAOAnuncio {
 	public static void recuperarFotos(Anuncio anuncio) throws SQLException, Exception {
 		Conexion bd = Broker.get().getConnectionSeleccion();
 		try{
-			String sql= "SELECT identificador, contentType FROM Fotos where idAnuncio=?";
+			String sql= "SELECT idFoto, identificador, contentType FROM Fotos where idAnuncio=?";
 			PreparedStatement p = bd.prepareStatement(sql);
 			p.setInt(1, anuncio.getIdAnuncio());
 			ResultSet rs = p.executeQuery();
 			while(rs.next()) {
-				String identificador = rs.getString(1);
-				String contentType = rs.getString(2);
+				String idFoto = rs.getString(1);
+				String identificador = rs.getString(2);
+				String contentType = rs.getString(3);
 				
 				String formato = contentType.split("/")[1];
 				
-				anuncio.getFotos().put("foto", identificador + "." + formato);
+				//anuncio.getFotos().put("foto", identificador + "." + formato);
+				anuncio.addFotoAlArray(idFoto, identificador + "." + formato);
 			}
 		}
 		catch(Exception e){

@@ -1,20 +1,29 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<p>
-	<h2>Cuenta</h2>
-</p>
-<label>email</label><input type="email" size="30" maxlength="40" id="useremail" readonly><br>
-<label>Nombre</label><input type="text" size="30" maxlength="40" id="nombre" readonly><br>
-<label>Apellido1</label><input type="text" size="30" maxlength="40" id="apellido1" readonly><br>
-<label>Apellido2</label><input type="text" size="30" maxlength="40" id="apellido2" readonly><br>
-<label>Teléfono</label><input type="tel" size="30" maxlength="40" id="telefono" readonly><br>
-<p>
-	<h2>Anuncios</h2>
-</p>
-<span id="areaAnunciosUsuario"></span>
+
+<div id="datosCuenta" style="display: block">
+	<p>
+		<h2>Cuenta</h2>
+	</p>
+	<label>email</label><input type="email" size="30" maxlength="40" id="useremail" readonly><br>
+	<label>Nombre</label><input type="text" size="30" maxlength="40" id="nombre" readonly><br>
+	<label>Apellido1</label><input type="text" size="30" maxlength="40" id="apellido1" readonly><br>
+	<label>Apellido2</label><input type="text" size="30" maxlength="40" id="apellido2" readonly><br>
+	<label>Teléfono</label><input type="tel" size="30" maxlength="40" id="telefono" readonly><br>
+	<p>
+		<h2>Anuncios</h2>
+	</p>
+	<span id="areaAnunciosUsuario"></span>
+	<p><button type="submit" id="nuevoAnuncio">Nuevo Anuncio</button></p>
+</div>
 
 <div id="datosAnuncio" style="display: none">
+	<p>
+		<h2>Datos Anuncio</h2>
+	</p>
 	<label>Descripcion</label><textarea cols="30" rows="5" id="descripcion" readonly></textarea><br>
-	<label>ID categoría</label><input type="text" size="30" maxlength="40" id="idCategoria" readonly><br>
+	<label>ID categoría</label><input type="text" cols="30" maxlength="40" id="idCategoria" readonly><br>
+	<div id="fotosView"></div>
+	<p><button type="submit" onclick="volver()">Volver</button></p>
 </div>
 
 <script>
@@ -85,16 +94,6 @@ function cargarDatosPersonales(){
 }
 
 function cargarGestionAnuncio(idAnuncio, idUsuario){
-	//$('#areaPrincipal').load('FormGestionarAnuncio.html?id='+idAnuncio);
-	//Limpiar #areaPrincipal y poner los elementos de FormGestionarAnuncio utilizando el DOM.
-	//Después recuperar el anuncio con 'idAnuncio' e 'idUsuario' (para que sólo el propietario del
-	//anuncio pueda gestionarlo) mediante una acción y rellenar los elementos con la información.
-	var areaAnuncios = document.getElementById("areaPrincipal");
-	areaAnuncios.innerHTML="";
-	var div = document.createElement("div");
-	div.setAttribute("id", "fotosView");
-	areaAnuncios.appendChild(div);
-	
 	var req = new XMLHttpRequest();
 	req.open("POST", "RecuperarAnuncioUsuario.action")
 	req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -105,15 +104,35 @@ function cargarGestionAnuncio(idAnuncio, idUsuario){
 				respuesta = JSON.parse(respuesta);
 				var anuncio = JSON.parse(respuesta.resultado);
 				if (anuncio.resultado=="OK"){
+					var div = document.getElementById("fotosView");
 					document.getElementById("descripcion").innerHTML = anuncio.descripcion;
-					document.getElementById("idCategoria").innerHTML = anuncio.categoria;
+					document.getElementById("idCategoria").setAttribute("value", anuncio.categoria);
+					document.getElementById("datosCuenta").style.display = "none";
 					document.getElementById("datosAnuncio").style.display = "block";
-					var img = document.createElement("img");
-					img.setAttribute("alt", "FotoAnuncio");
-					img.setAttribute("src", "images\\"+anuncio.fotos[0].foto);
-					img.setAttribute("style", "width:220px;height:220px;");
-					div.appendChild(img);
-					//alert(anuncio.fotos[0].foto);
+					var numFotos = anuncio.fotos.length;
+					if (numFotos > 0){
+						var tabla=document.createElement("table");
+						div.appendChild(tabla);
+						var cols=3;
+						var filas=numFotos/cols;
+						var cont=0;
+						for(var i=0; i<filas; i++){
+							var fila=document.createElement("tr");
+							tabla.appendChild(fila);
+							for(var j=0; j<cols; j++){
+								var celda=document.createElement("td");
+								fila.appendChild(celda);
+								if (cont<numFotos){
+									var img = document.createElement("img");
+									img.setAttribute("alt", "FotoAnuncio");
+									img.setAttribute("src", "images\\"+anuncio.fotos[cont].foto);
+									img.setAttribute("style", "width:100px;height:100px;");
+									celda.appendChild(img);
+									cont++;
+								}
+							}
+						}
+					}
 				} else {
 					alert(respuesta);
 				}
@@ -131,5 +150,3 @@ function volver(){
 	window.location = "index.html";
 }
 </script>
-<p><button type="submit" id="nuevoAnuncio">Nuevo Anuncio</button></p>
-<p><button type="submit" onclick="volver()">Volver</button></p>
