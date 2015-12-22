@@ -57,7 +57,7 @@ request.onreadystatechange=function(){
 };
 request.send();
 
-// <<CHAT>>
+// <CHAT>
 if (window.WebSocket==undefined) {
 	alert("Lo sentimos, pero tu navegador no soporta este tipo de comunicación");
 }
@@ -81,7 +81,7 @@ chat.onclose = function() {
 function enviarMensaje(){
 	chat.send("{Hola}");
 }
-// <<CHAT>>
+// </CHAT>
 
 function subirFoto(){
 	var req = new XMLHttpRequest();

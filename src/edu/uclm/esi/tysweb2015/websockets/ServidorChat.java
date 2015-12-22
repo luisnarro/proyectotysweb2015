@@ -34,6 +34,9 @@ public class ServidorChat {
 				String login = jso.getString("texto");
 				ChatUser chatUser = new ChatUser(login, session);
 				chatUsers.put(login, chatUser);
+			}else if (jso.get("tipo").equals("mensajeUsuario")){
+				String mensaje = jso.getString("texto");
+				//Redirigir o almacenar el mensaje para que el usuario Administrador lo lea y conteste.
 			}
 		}catch(JSONException e){
 			
