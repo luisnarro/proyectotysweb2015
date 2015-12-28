@@ -1,0 +1,53 @@
+header {
+	background:#2c3e50;
+	color:#fff;
+}
+
+.main {
+	background:#f2f2f2;
+	color:black;
+}
+
+.color1 {
+	background: #34495e;
+	color:#fff;
+}
+
+aside {
+	background:#c0392b;
+	color:#fff;
+}
+
+footer {
+	background:#0099FF;
+	color:#fff;
+}
+
+/* unvisited link */
+a:link {
+    color: black;
+}
+
+body{
+	background:solid white; /*el color del fondo*/ 
+	font-size:20px; /*tamaño del texto en pixeles*/ 
+	color:#029bc1; /*color de las letras*/ 
+	padding:30px; /*el espacio entre el borde y el contenido*/ 
+	 
+} 
+
+p {
+    display: block;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+li {
+
+ hight: 50px;
+ margin-top:10px;
+}
+
+

@@ -1,10 +1,10 @@
 <span id="conectadoComo">Conectado como </span>
-<a id="email" href="javascript:gestionarCuenta()"></a>
+<a id="sessemail" href="javascript:gestionarCuenta()"></a>
 <br>
 <button id="desconectar" type="button" onclick="desconectar()">Desconectar</button>
 
 <script >
-document.getElementById("email").innerHTML = sessionStorage.getItem("email");
+document.getElementById("sessemail").innerHTML = sessionStorage.getItem("email");
 
 function desconectar(){
 	var req = new XMLHttpRequest();
@@ -16,6 +16,7 @@ function desconectar(){
 				sessionStorage.removeItem("email");
 				$('#datosPersonales').load('FormDPDesconectado.html');
 				$('#areaPrincipal').empty();
+				location.reload();
 			}else {
 				alert("Error. "+ request.statusText);
 			}

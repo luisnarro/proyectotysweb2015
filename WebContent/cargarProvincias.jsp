@@ -7,10 +7,17 @@ String sComunidad = request.getParameter("comunidad");
 int comunidad = Integer.parseInt(sComunidad);
 
 Conexion db=Broker.get().getConnectionSeleccion();
-String sql ="select id, nombre from ubicaciones where tipo='Provincia' and idPadre=? order by nombre";
+String sql = null;
+PreparedStatement ps;
+if(comunidad == -1){
+	sql ="select id, nombre from ubicaciones where tipo='Provincia' order by nombre";
+	ps=db.prepareStatement(sql);
+}else{
+	sql ="select id, nombre from ubicaciones where tipo='Provincia' and idPadre=? order by nombre";
+	ps=db.prepareStatement(sql);
+	ps.setInt(1, comunidad);
+}
 
-PreparedStatement ps=db.prepareStatement(sql);
-ps.setInt(1, comunidad);
 JSONArray jsa=new JSONArray();
 ResultSet rs=ps.executeQuery();
 while (rs.next()) {

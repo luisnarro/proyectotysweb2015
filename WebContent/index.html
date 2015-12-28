@@ -4,32 +4,231 @@
 <meta charset="UTF-8">
 <script src="https://apis.google.com/js/client:plusone.js"></script >
 <title>Publianuncios</title>
-<style type="text/css">	
-	.celdaRoja{
-		color: red;
-	}
-	.spanAnuncio{
-		background-color: grey;
-		color: white;
-	}
-</style>
+
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<!-- LINKS BOOTSTRAP -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+	<link rel="stylesheet" href="estilos.css">
+	<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+	
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 <script>
 	$(document).ready(function() {
 		if(sessionStorage.getItem("email")){
-			$('#datosPersonales').load('FormDPSesion.html');
+			//$('#datosPersonales').load('FormDPSesion.html');
 			$('#areaPrincipal').load('FormGestionarCuenta.html');
+			$('#navbarLogin').load('FormDPSesion.html');
 		}else{
-			$('#datosPersonales').load('FormDPDesconectado.html');
+			//$('#datosPersonales').load('FormDPDesconectado.html');
 		}
+		cargarCCAA();
+		cargarProvinciasBusqueda();
 	})
 </script>
 
 </head>
+
 <body>
-	<table border="1">
-		<tr class="celdaRoja">
+<!-- ######################## NAVIGATION ########################-->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+            	<img src="images/logo.jpg" alt="Logo" width="292" height="60">
+            	
+                
+            </div>
+            
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav" >
+                    
+                    <li>
+                        <a href="#">Buscar: </a>
+                        <i class="icon-search"></i>
+                    </li>
+                    <li>
+						<form class="navbar-form" role="search">
+       						<div class="input-group">
+            				<input type="text" class="form-control" placeholder="Search" name="srch-term" id="srch-term">
+            					<div class="input-group-btn">
+                					<button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+           	 					</div>
+        					</div>
+        				</form>
+					</li>
+					
+                </ul>
+                <ul class="nav navbar-nav navbar-right" id="navbarLogin">
+        			<!-- <li><a href="FormDPRegistro.html"><span class="glyphicon glyphicon-user"></span> Registrarse</a></li> -->
+       				<!-- <li><a href="FormDPLogin.html"><span class="glyphicon glyphicon-log-in"></span> Identificarse</a></li> -->
+      				<li class="clr4 dropdown">
+					<a class="dropdown-toggle" data-toggle="dropdown">Crear Cuenta<span class="caret"></span></a>
+						<ul class="dropdown-menu" style="padding: 20px 10px 5px 10px; width:300px;">
+							<li>
+								<form>
+									<div class="form-group">
+										<input type="email" class="form-control" size="30" maxlength="40" id="email" placeholder="Email">
+									</div>
+									<div class="form-group">
+										<input type="text" class="form-control" size="30" maxlength="40" id="nombre" placeholder="Nombre">
+									</div>
+									<div class="form-group">
+										<input type="text" class="form-control" size="30" maxlength="40" id="apellido1" placeholder="Apellido1">
+									</div>
+									<div class="form-group">
+										<input type="text" class="form-control" size="30" maxlength="40" id="apellido2" placeholder="Apellido2">
+									</div><div class="form-group">
+										<input type="text" class="form-control" size="30" maxlength="40" id="telefono" placeholder="Telefono">
+									</div>
+									<div class="form-group">
+										<input type="password" class="form-control" size="30" maxlength="40" id="pwd1" placeholder="Contrase?a">
+									</div>
+									<div class="form-group">
+										<input type="password" class="form-control" size="30" maxlength="40" id="pwd2" placeholder="Repite la contrase?a">
+									</div>
+									<p>
+										<label for="selectCCAA">Comunidad aut?noma:</label>
+										<select id="selectCCAA" onchange="cargarProvincias()">
+											<option>  </option>
+										</select>
+									</p>
+									
+									<p>
+										<label for="selectProvincias">Provincia:</label>
+										<select id="selectProvincias" onchange="cargarMunicipios()"></select>
+									</p>
+									
+									<p>
+										<label for="selectMunicipios">Municipio:</label>
+										<select id="selectMunicipios"></select>
+									</p>
+									<button type="button" class="btn btn-primary" onclick="registrar()">Crear Cuenta</button>
+								</form>
+							</li>
+						</ul>
+					</li>
+      				<li class="clr4 dropdown">
+					<a class="dropdown-toggle" data-toggle="dropdown">Login<span class="caret"></span></a>
+						<ul class="dropdown-menu" style="padding: 20px 10px 5px 10px; width:300px;">
+							<li>
+								<form>
+
+									<div class="input-group">
+										<span class="input-group-addon"><i class="fa fa-user"></i></span>
+										<input type="text"  id="logemail" placeholder="email address" size="30" maxlength="40">
+									</div>
+									<div class="input-group">
+										<span class="input-group-addon"><i class="fa fa-lock"></i></span>
+										<input  type="password"  id="password" placeholder="Password" size="30" maxlength="40">
+									</div>
+									<div class="checkbox">
+										<label><input type="checkbox"> ?Recordarme?</label>
+									</div>
+									<button type="button" class="btn btn-primary" onclick="identificar()">Login</button>
+									<a id="recordarPwd" href="javascript:recordarPassword()">?Olvid? la contrase?a!</a>
+									<p>
+										<div class="g-signin2" data-onsuccess="onSignIn"></div>
+									
+									<button type="submit" class="btn btn-block btn-social btn-google-plus" onclick="GoogleLogin()"><i class="fa fa-google-plus"></i> Sign in with Google</button>		
+								</form>
+							</li>
+							
+        
+						</ul>
+					</li>
+					
+      			</ul>
+            </div>
+            
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+    
+    <!-- ######################## CONTENIDO ######################## -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">      	
+                <p class="well">Categorias</p>              
+                <div class="list-group">
+                	<span id="areaArbol"></span>    
+                </div>
+            </div>
+            <div class="col-md-9">
+				<hr>
+                	<div class="well">
+						<hr>
+		                <div class="row">
+		                    <div class="col-md-12">
+		                    	<ol class="breadcrumb"><li><a href="#">Inicio</a></li><li class="active">Anuncios</li></ol>
+		                    </div>
+		                </div>
+		                <hr>
+		                 <div class="row">
+		                     <div class="col-md-12">
+		                     	<div class="buscanuncios">Buscador de Anuncios</div>
+									<div class=bus>
+										<noscript>
+									        <div style="position: absolute; background-color: #880000; color: #FFF">
+									            Activa Javascript en tu navegador para poder utilizar publianuncios
+									        </div>
+									    </noscript>
+									    <div class="busli busli1">
+									    	<select class=cm1 id="buscaCat"><option value="0">todas las categorías</select>
+									        <select class=cm1 id="buscaProv"><option value="0">en toda España</select>
+									        <select class=cm1 id="orden"><option value="0">Ordena por fecha<option value="1">Ascendente<option value="2">Descendente</select>
+									    </div>
+									    <div class="busli filtro">
+											Con las palabras <input type=text id="palabras" maxlength="60" size=20>
+										</div>
+									</div>
+								</div>	
+								<div class="pull-right"><button type="button" class="btn" onclick="filtrarAnuncios()">BUSCAR</button></div>
+		                     </div>
+		                 </div>
+		                <hr>
+		                <div class="row">
+		                    <div class="col-md-12">  
+		                        <p>un	buscador	que	busca	dentro	de	esta categoría	y	un botón etiquetado	Mi	lista	de	deseos.</p>
+		                    </div>
+		                </div>
+              		</div>
+                <div class="well">
+                   <div class="row">
+                        <div class="col-md-12">
+                            <span style="font-size:20px"id="areaPrincipal"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!-- /.container -->
+    
+    <!-- ######################## PIE DE PAGINA ######################## -->
+	<footer class="container-fluid text-center">
+	    <div class="row">
+	        <div class="col-lg-12">
+	        	<div class="piePagina">
+			       <div style="margin: 5px 0 5px 0; text-align: center; clear: both;">
+			       <a href="https://wwww.facebook.com" target="_blank"><img alt="Facebook de Publianuncios.com" src="images/fb.jpg" width="30" height="30" align="left"></a>&nbsp;&nbsp;
+			       <a href="https://www.twitter.com" target="_blank"><img alt="Twitter de Publianuncios.com" src="images/tw.jpg" width="30" height="30" align="left"></a>
+			       <a href="https://es.linkedin.com/" target="_blank"><img alt="Linkedin de Publianuncios.com" src="images/in.jpg" width="30" height="30" align="left"></a></div>           
+	       
+			       <a style="font-size:13px" target="_blank" href="/terminos/">TERMINOS DE USO</a> -
+			       <a style="font-size:13px" target="_blank" href="/cookies/">POLITICA DE COOKIES</a> -
+			       <a style="font-size:13px" target="_blank" href="/quienes/">QUIENES SOMOS</a> -
+			       <a style="font-size:13px" target="_blank" href="/contacto/">CONTACTO</a>	 
+				</div>
+	            <h6 align="center"> Copyright ? 2015 - Tecnolog?as y Sistemas Web ESI Ciudad Real - Tabl?n de anuncios gratis</h6>
+	        </div>
+	    </div>
+	</footer>
+	
+    <div><hr></div>
+	<!--<table border="1">
+		 <tr class="celdaRoja">
 			<td>
 				<span id="areaEmpresa">Publianuncios.com</span>
 			</td>
@@ -47,7 +246,7 @@
 			<td colspan="3">
 				<span id="areaPrincipal">Esta es el área principal</span>
 			</td>
-		</tr>
+		</tr> 
 		<tr class="celdaRoja"	>
 			<td>
 				<span id="areaTerminosDeUso">Terminos de uso</span>
@@ -62,7 +261,13 @@
 				<span id="area">Área</span>
 			</td>
 		</tr>
-	</table>
+	</table> -->
+	
+	 <!-- Latest compiled and minified JavaScript -->
+	<script src="http://code.jquery.com/jquery-latest.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	
 	<script>
 	
@@ -80,102 +285,269 @@
 	};
 	requestExterno.send();*/
 	
+	function identificar(){
+		var reqlogin = new XMLHttpRequest();
+		reqlogin.open("POST", "Identificar.action")
+		reqlogin.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		reqlogin.onreadystatechange=function(){
+			if (reqlogin.readyState==4) {
+				if (reqlogin.status==200){
+					var respuesta = reqlogin.responseText;
+					respuesta = JSON.parse(respuesta);
+					if (respuesta.resultado=="OK"){
+						sessionStorage.setItem("email", document.getElementById("logemail").value);
+						//enviarDatosAlServidorDePublicidad(sessionStorage.getItem("email"));
+						location.reload();
+						//$('#datosPersonales').load('FormDPSesion.html');
+						//$('#areaPrincipal').load('FormGestionarCuenta.html');
+					} else {
+						alert(respuesta.resultado);
+					}
+				}
+			}
+		};
+		
+		var email = document.getElementById("logemail").value;
+		var pwd = document.getElementById("password").value;
+		
+		var pars = "email="+email+"&pwd="+pwd;
+		var uri = encodeURI(pars);
+		reqlogin.send(uri);
+	}
 	
+	function recordarPassword(){
+		$('#navbarLogin').load('FormRecordarPwd.html');
+	}
+	
+	function registrar(){
+		var req = new XMLHttpRequest();
+		req.open("POST", "Register.action")
+		req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		req.onreadystatechange=function(){
+			if (req.readyState==4) {
+				if (req.status==200){
+					var respuesta = req.responseText;
+					respuesta = JSON.parse(respuesta);
+					alert(respuesta.resultado);
+					location.reload();
+				}else {
+					alert("Error. "+ request.statusText);
+				}
+			}
+		};
+		
+		var email = document.getElementById("email").value;
+		var nombre = document.getElementById("nombre").value;
+		var apellido1 = document.getElementById("apellido1").value;
+		var apellido2 = document.getElementById("apellido2").value;
+		var telefono = document.getElementById("telefono").value;
+		var pwd1 = document.getElementById("pwd1").value;
+		var pwd2 = document.getElementById("pwd2").value;
+		var ubicacion = document.getElementById("selectMunicipios").value;
+		
+		var pars = "email="+email+"&nombre="+nombre+"&apellido1="+apellido1+"&apellido2="+apellido2+"&telefono="+telefono+"&pwd1="+pwd1+"&pwd2="+pwd2+"&ubicacion="+ubicacion;
+		var uri = encodeURI(pars);
+		req.send(uri);
+	}
+
+	function cargarMunicipios() {
 		var request = new XMLHttpRequest();
-		request.open("GET", "getCategorias.jsp");
+		request.open("POST", "cargarMunicipios.jsp")
+		request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		var parm = "Provincia=" + document.getElementById("selectProvincias").value;
+		request.onreadystatechange=function(){
+			if (request.readyState==4) {
+				if (request.status==200){
+					var select = document.getElementById("selectMunicipios");
+					var municipios = JSON.parse(request.responseText);
+					select.innerHTML="";
+					for (var i=0; i<municipios.length; i++) {
+						var option=document.createElement("option");
+						option.setAttribute("value", municipios[i].id);
+						option.innerHTML=municipios[i].nombre;
+						select.appendChild(option);
+					}
+				}else {
+					alert("Error. "+ request.statusText);
+				}
+			}
+		};
+		request.send(parm);
+	}
+	function cargarProvincias() {
+		var request = new XMLHttpRequest();
+		request.open("POST", "cargarProvincias.jsp")
+		request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		var parm = "comunidad=" + document.getElementById("selectCCAA").value;
+		request.onreadystatechange=function(){
+			if (request.readyState==4) {
+				if (request.status==200){
+					var provincias = JSON.parse(request.responseText);
+					for (var i=0; i<provincias.length; i++) {
+						var option=document.createElement("option");
+						option.setAttribute("value", provincias[i].id);
+						option.innerHTML=provincias[i].nombre;
+						var select = document.getElementById("selectProvincias");
+						select.appendChild(option);
+					}
+				}else {
+					alert("Error. "+ request.statusText);
+				}
+			}
+		};
+		request.send(parm);
+	}
+	
+	function cargarProvinciasBusqueda() {
+		var request = new XMLHttpRequest();
+		request.open("POST", "cargarProvincias.jsp")
+		request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		request.onreadystatechange=function(){
+			if (request.readyState==4) {
+				if (request.status==200){
+					var provCategoria = document.getElementById("buscaProv");
+					var provincias = JSON.parse(request.responseText);
+					for (var i=0; i<provincias.length; i++) {
+						var option=document.createElement("option");
+						option.setAttribute("value", provincias[i].id);
+						option.innerHTML=provincias[i].nombre;
+						provCategoria.appendChild(option);
+					}
+				}else {
+					alert("Error. "+ request.statusText);
+				}
+			}
+		};
+		request.send("comunidad=-1");
+	}
+
+	function cargarCCAA(){
+		var request = new XMLHttpRequest();
+		request.open("GET", "cargarCCAA.jsp");
 		request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 		request.onreadystatechange=function(){
 			if (request.readyState==4){
 				if (request.status==200) {
 					var respuesta = JSON.parse(request.responseText);
-					var arbol = document.getElementById("areaArbol");
-					var ul = document.createElement("ul");
 					for (var i=0; i<respuesta.length; i++){
-						var li=document.createElement("li");
-						li.setAttribute("value", respuesta[i].id);
-						var enlace=document.createElement("a");
-						enlace.setAttribute("href", "javascript:cargarAnuncios("+ respuesta[i].id+")");
-						enlace.innerHTML=respuesta[i].nombre;
-						li.appendChild(enlace);
-						ul.appendChild(li);
+						var option=document.createElement("option");
+						option.setAttribute("value", respuesta[i].id);
+						option.innerHTML=respuesta[i].nombre;
+						var select = document.getElementById("selectCCAA");
+						select.appendChild(option);
 					}
-					arbol.appendChild(ul);
 				}else{
 					alert("Error. "+request.statusText);
 				}
 			}
 		};
 		request.send();
-		
-		var anuncios=[];
-		function cargarAnuncios(idCategoria){
-			var request = new XMLHttpRequest();
-			request.open("POST", "getAnuncios.jsp");
-			request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-			request.onreadystatechange=function(){
-				if (request.readyState==4){
-					if (request.status==200) {
-						anuncios=[];
-						var anunciosrecibidos = JSON.parse(request.responseText);
-						for (var i=0; i<anunciosrecibidos.length; i++){
-							var id=anunciosrecibidos[i].id;
-							var descripcion=anunciosrecibidos[i].descripcion;
-							var anuncio = new Anuncio(id, descripcion);
-							anuncios.push(anuncio);
-						}
-						mostrarAnuncios();
-					}else{
-						alert("Error. "+request.statusText);
-					}
+	}
+	
+	
+	var request = new XMLHttpRequest();
+	request.open("GET", "getCategorias.jsp");
+	request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	request.onreadystatechange=function(){
+		if (request.readyState==4){
+			if (request.status==200) {
+				var respuesta = JSON.parse(request.responseText);
+				var arbol = document.getElementById("areaArbol");
+				var busCategoria = document.getElementById("buscaCat");
+				var ul = document.createElement("ul");
+				for (var i=0; i<respuesta.length; i++){
+					
+					var option=document.createElement("option");
+					option.setAttribute("value", respuesta[i].id);
+					option.innerHTML=respuesta[i].nombre;
+					busCategoria.appendChild(option);
+					
+					var li=document.createElement("li");
+					li.setAttribute("value", respuesta[i].id);
+					var enlace=document.createElement("a");
+					enlace.setAttribute("href", "javascript:cargarAnuncios("+ respuesta[i].id+")");
+					enlace.innerHTML=respuesta[i].nombre;
+					li.appendChild(enlace);
+					ul.appendChild(li);
 				}
-			};
-			var par="idCategoria=" + idCategoria;
-			request.send(par);
+				arbol.appendChild(ul);
+			}else{
+				alert("Error. "+request.statusText);
+			}
 		}
+	};
+	request.send();
 		
-		function mostrarAnuncios(){
-			var areaPrincipal=document.getElementById("areaPrincipal");
-			areaPrincipal.innerHTML=""; 			//Se elimina todo el contenido (hijos) dentro de "areaPrincipal"
-			var span=document.createElement("span");
-			span.innerHTML="En esta categoría hay "+ anuncios.length +" anuncios ";
-			areaPrincipal.appendChild(span);
-			
-			var tabla=document.createElement("table");
-			areaPrincipal.appendChild(tabla);
-			var cols=3;
-			var filas=anuncios.length/cols;
-			
-			var cont=0;
-			for(var i=0; i<filas; i++){
-				var fila=document.createElement("tr");
-				tabla.appendChild(fila);
-				for(var j=0; j<cols; j++){
-					var celda=document.createElement("td");
-					fila.appendChild(celda);
-					if (cont<anuncios.length){
-						var span=anuncios[cont].getWidget();
-						celda.appendChild(span);
-						cont++;
+	var anuncios=[];
+	function cargarAnuncios(idCategoria){
+		var request = new XMLHttpRequest();
+		request.open("POST", "getAnuncios.jsp");
+		request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		request.onreadystatechange=function(){
+			if (request.readyState==4){
+				if (request.status==200) {
+					anuncios=[];
+					var anunciosrecibidos = JSON.parse(request.responseText);
+					for (var i=0; i<anunciosrecibidos.length; i++){
+						var id=anunciosrecibidos[i].id;
+						var descripcion=anunciosrecibidos[i].descripcion;
+						var anuncio = new Anuncio(id, descripcion);
+						anuncios.push(anuncio);
 					}
+					mostrarAnuncios();
+				}else{
+					alert("Error. "+request.statusText);
+				}
+			}
+		};
+		var par="idCategoria=" + idCategoria;
+		request.send(par);
+	}
+		
+	function mostrarAnuncios(){
+		var areaPrincipal=document.getElementById("areaPrincipal");
+		areaPrincipal.innerHTML=""; 			//Se elimina todo el contenido (hijos) dentro de "areaPrincipal"
+		var span=document.createElement("span");
+		span.innerHTML="En esta categoría hay "+ anuncios.length +" anuncios ";
+		areaPrincipal.appendChild(span);
+		
+		var tabla=document.createElement("table");
+		areaPrincipal.appendChild(tabla);
+		var cols=3;
+		var filas=anuncios.length/cols;
+		
+		var cont=0;
+		for(var i=0; i<filas; i++){
+			var fila=document.createElement("tr");
+			tabla.appendChild(fila);
+			for(var j=0; j<cols; j++){
+				var celda=document.createElement("td");
+				fila.appendChild(celda);
+				if (cont<anuncios.length){
+					var span=anuncios[cont].getWidget();
+					celda.appendChild(span);
+					cont++;
 				}
 			}
 		}
-		
-		function Anuncio(id, descripcion){
-			this.id = id;
-			this.descripcion = descripcion;
-			this.fotos=[];
-		}
-		
-		Anuncio.prototype.getWidget = function(){
-			var result = document.createElement("span");
-			result.setAttribute("id", "anuncio" + this.id);
-			result.setAttribute("class", "spanAnuncio");
-			var etiquetaDescripcion=document.createElement("label");
-			etiquetaDescripcion.innerHTML=this.descripcion;
-			result.appendChild(etiquetaDescripcion);
-			return result;
-		}
+	}
+	
+	// Definición de la clase "Anuncio" en javascript.
+	function Anuncio(id, descripcion){
+		this.id = id;
+		this.descripcion = descripcion;
+		this.fotos=[];
+	}
+	// Definición del método "getWidget" para la clase "Anuncio" en javascript.
+	Anuncio.prototype.getWidget = function(){
+		var result = document.createElement("span");
+		result.setAttribute("id", "anuncio" + this.id);
+		result.setAttribute("class", "spanAnuncio");
+		var etiquetaDescripcion=document.createElement("label");
+		etiquetaDescripcion.innerHTML=this.descripcion;
+		result.appendChild(etiquetaDescripcion);
+		return result;
+	}
 	</script>
 </body>
 </html>

@@ -15,7 +15,7 @@ public class DAOUsuario {
 		Conexion bd = Broker.get().getConnectionInsercion();
 		
 		try{
-			if (tipoDeOAuth.length==0){
+			if (tipoDeOAuth[0] == 1){
 				String sql="{call insertarUsuario (?, ?, ?, ?, ?, ?, ?, ?)}";
 				CallableStatement cs=bd.prepareCall(sql);
 				cs.setString(1, usuario.getEmail());
@@ -30,7 +30,7 @@ public class DAOUsuario {
 				String exito=cs.getString(8);
 				if (exito!=null && !(exito.equals("OK")))
 					throw new SQLException(exito);
-			} else {
+			} else if(tipoDeOAuth[0] == 2){
 				String sql="{call insertarUsuarioOAuth (?, ?, ?)}";
 				CallableStatement cs=bd.prepareCall(sql);
 				cs.setString(1, usuario.getEmail());

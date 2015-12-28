@@ -20,7 +20,7 @@ public class Gestor {
 			String apellido2, String telefono, String pwd1, int ubicacion) throws Exception {
 		
 		Usuario usuario = new Usuario(email, nombre, apellido1, apellido2, telefono, pwd1, ubicacion);
-		usuario.insert();
+		usuario.insert(1);
 	}
 
 	public Usuario identificar(String email, String pwd) throws Exception {
