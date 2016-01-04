@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import edu.uclm.esi.tysweb2015.dominio.Anuncio;
 
@@ -107,6 +108,77 @@ public class DAOAnuncio {
 		finally{
 			bd.close();
 		}
+	}
+
+	public static ArrayList<Anuncio> buscarAnuncios(String palabras, int categoria,
+			int provincia, int orden) throws SQLException, Exception {
+		ArrayList <Anuncio> anuncios = new ArrayList<Anuncio>();
+		String sql = null;
+
+		Conexion bd = Broker.get().getConnectionSeleccion();
+		try{
+			PreparedStatement p = null;
+			if(categoria==0 && provincia==0){
+				if(orden == 1){
+					sql= "SELECT a.id, descripcion, idCategoria, idAnunciante FROM Anuncios a, usuarios u, ubicaciones ub where u.idUbicacion=ub.id AND a.idAnunciante=u.id ORDER BY a.fechaDeAlta";
+					p = bd.prepareStatement(sql);
+				}else if(orden == 2){
+					sql= "SELECT a.id, descripcion, idCategoria, idAnunciante FROM Anuncios a, usuarios u, ubicaciones ub where u.idUbicacion=ub.id AND a.idAnunciante=u.id ORDER BY a.fechaDeAlta DESC";
+					p = bd.prepareStatement(sql);
+				}
+			}else if(categoria>0 && provincia==0){
+				if(orden == 1){
+					sql= "SELECT a.id, descripcion, idCategoria, idAnunciante FROM Anuncios a, usuarios u, ubicaciones ub where a.idCategoria=? AND u.idUbicacion=ub.id AND a.idAnunciante=u.id ORDER BY a.fechaDeAlta";
+					p = bd.prepareStatement(sql);
+					p.setInt(1, categoria);
+				}else if(orden == 2){
+					sql= "SELECT a.id, descripcion, idCategoria, idAnunciante FROM Anuncios a, usuarios u, ubicaciones ub where a.idCategoria=? AND u.idUbicacion=ub.id AND a.idAnunciante=u.id ORDER BY a.fechaDeAlta DESC";
+					p = bd.prepareStatement(sql);
+					p.setInt(1, categoria);
+				}
+			}else if(categoria==0 && provincia>0){
+				if(orden == 1){
+					sql= "SELECT a.id, descripcion, idCategoria, idAnunciante FROM Anuncios a, usuarios u, ubicaciones ub where u.idUbicacion=ub.id AND ub.idPadre=? AND a.idAnunciante=u.id ORDER BY a.fechaDeAlta";
+					p = bd.prepareStatement(sql);
+					p.setInt(2, provincia);
+				}else if(orden == 2){
+					sql= "SELECT a.id, descripcion, idCategoria, idAnunciante FROM Anuncios a, usuarios u, ubicaciones ub where u.idUbicacion=ub.id AND ub.idPadre=? AND a.idAnunciante=u.id ORDER BY a.fechaDeAlta DESC";
+					p = bd.prepareStatement(sql);
+					p.setInt(2, provincia);
+				}
+			}else{
+				if(orden == 1){
+					sql= "SELECT a.id, descripcion, idCategoria, idAnunciante FROM Anuncios a, usuarios u, ubicaciones ub where a.idCategoria=? AND u.idUbicacion=ub.id AND ub.idPadre=? AND a.idAnunciante=u.id ORDER BY a.fechaDeAlta";
+					p = bd.prepareStatement(sql);
+					p.setInt(1, categoria);
+					p.setInt(2, provincia);
+				}else if(orden == 2){
+					sql= "SELECT a.id, descripcion, idCategoria, idAnunciante FROM Anuncios a, usuarios u, ubicaciones ub where a.idCategoria=? AND u.idUbicacion=ub.id AND ub.idPadre=? AND a.idAnunciante=u.id ORDER BY a.fechaDeAlta DESC";
+					p = bd.prepareStatement(sql);
+					p.setInt(1, categoria);
+					p.setInt(2, provincia);
+				}
+			}
+			ResultSet rs = p.executeQuery();
+			while(rs.next()) {	
+				int idAnuncio = rs.getInt(1);
+				String descripcion = rs.getString(2);
+				int idCategoria = rs.getInt(3);
+				int idAnunciante = rs.getInt(4);
+				
+				Anuncio a = new Anuncio(descripcion, idCategoria, idAnunciante);
+				a.setIdAnuncio(idAnuncio);
+				anuncios.add(a);
+			}
+		}
+		catch(Exception e){
+			throw e;
+		}
+		finally{
+			bd.close();
+		}
+		
+		return anuncios;
 	}
 
 }

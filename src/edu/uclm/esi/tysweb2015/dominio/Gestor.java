@@ -1,6 +1,7 @@
 package edu.uclm.esi.tysweb2015.dominio;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class Gestor {
 	private static Gestor yo;
@@ -78,6 +79,11 @@ public class Gestor {
 		result = anuncio.recuperar();
 		return result;
 		
+	}
+
+	public ArrayList<Anuncio> buscarAnuncios(String palabras, int categoria, int provincia, int orden) throws SQLException, Exception {
+		Anuncio anuncioBuscar = new Anuncio();
+		return anuncioBuscar.buscarAnuncios(palabras, categoria, provincia, orden);
 	}
 
 }

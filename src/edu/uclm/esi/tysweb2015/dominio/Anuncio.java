@@ -92,4 +92,9 @@ public class Anuncio {
 		DAOAnuncio.recuperarFotos(this);		
 	}
 
+	public ArrayList<Anuncio> buscarAnuncios(String palabras, int categoria,
+			int provincia, int orden) throws SQLException, Exception {
+		return DAOAnuncio.buscarAnuncios(palabras, categoria, provincia, orden);
+	}
+
 }
