@@ -120,40 +120,42 @@ public class DAOAnuncio {
 			PreparedStatement p = null;
 			if(categoria==0 && provincia==0){
 				if(orden == 1){
-					sql= "SELECT a.id, descripcion, idCategoria, idAnunciante FROM Anuncios a, usuarios u, ubicaciones ub where u.idUbicacion=ub.id AND a.idAnunciante=u.id ORDER BY a.fechaDeAlta";
+					sql= "SELECT a.id, descripcion, idCategoria, idAnunciante FROM Anuncios a, usuarios u, ubicaciones ub where u.idUbicacion=ub.id AND a.idAnunciante=u.id AND a.descripcion LIKE ? ORDER BY a.fechaDeAlta";
 					p = bd.prepareStatement(sql);
+					p.setString(1, "%" + palabras + "%");
 				}else if(orden == 2){
-					sql= "SELECT a.id, descripcion, idCategoria, idAnunciante FROM Anuncios a, usuarios u, ubicaciones ub where u.idUbicacion=ub.id AND a.idAnunciante=u.id ORDER BY a.fechaDeAlta DESC";
+					sql= "SELECT a.id, descripcion, idCategoria, idAnunciante FROM Anuncios a, usuarios u, ubicaciones ub where u.idUbicacion=ub.id AND a.idAnunciante=u.id AND a.descripcion LIKE ? ORDER BY a.fechaDeAlta DESC";
 					p = bd.prepareStatement(sql);
+					p.setString(1, "%" + palabras + "%");
 				}
 			}else if(categoria>0 && provincia==0){
 				if(orden == 1){
-					sql= "SELECT a.id, descripcion, idCategoria, idAnunciante FROM Anuncios a, usuarios u, ubicaciones ub where a.idCategoria=? AND u.idUbicacion=ub.id AND a.idAnunciante=u.id ORDER BY a.fechaDeAlta";
+					sql= "SELECT a.id, descripcion, idCategoria, idAnunciante FROM Anuncios a, usuarios u, ubicaciones ub where a.idCategoria=? AND u.idUbicacion=ub.id AND a.idAnunciante=u.id AND a.descripcion LIKE ? ORDER BY a.fechaDeAlta";
 					p = bd.prepareStatement(sql);
 					p.setInt(1, categoria);
 				}else if(orden == 2){
-					sql= "SELECT a.id, descripcion, idCategoria, idAnunciante FROM Anuncios a, usuarios u, ubicaciones ub where a.idCategoria=? AND u.idUbicacion=ub.id AND a.idAnunciante=u.id ORDER BY a.fechaDeAlta DESC";
+					sql= "SELECT a.id, descripcion, idCategoria, idAnunciante FROM Anuncios a, usuarios u, ubicaciones ub where a.idCategoria=? AND u.idUbicacion=ub.id AND a.idAnunciante=u.id AND a.descripcion LIKE ? ORDER BY a.fechaDeAlta DESC";
 					p = bd.prepareStatement(sql);
 					p.setInt(1, categoria);
 				}
 			}else if(categoria==0 && provincia>0){
 				if(orden == 1){
-					sql= "SELECT a.id, descripcion, idCategoria, idAnunciante FROM Anuncios a, usuarios u, ubicaciones ub where u.idUbicacion=ub.id AND ub.idPadre=? AND a.idAnunciante=u.id ORDER BY a.fechaDeAlta";
+					sql= "SELECT a.id, descripcion, idCategoria, idAnunciante FROM Anuncios a, usuarios u, ubicaciones ub where u.idUbicacion=ub.id AND ub.idPadre=? AND a.idAnunciante=u.id AND a.descripcion LIKE ? ORDER BY a.fechaDeAlta";
 					p = bd.prepareStatement(sql);
 					p.setInt(2, provincia);
 				}else if(orden == 2){
-					sql= "SELECT a.id, descripcion, idCategoria, idAnunciante FROM Anuncios a, usuarios u, ubicaciones ub where u.idUbicacion=ub.id AND ub.idPadre=? AND a.idAnunciante=u.id ORDER BY a.fechaDeAlta DESC";
+					sql= "SELECT a.id, descripcion, idCategoria, idAnunciante FROM Anuncios a, usuarios u, ubicaciones ub where u.idUbicacion=ub.id AND ub.idPadre=? AND a.idAnunciante=u.id AND a.descripcion LIKE ? ORDER BY a.fechaDeAlta DESC";
 					p = bd.prepareStatement(sql);
 					p.setInt(2, provincia);
 				}
 			}else{
 				if(orden == 1){
-					sql= "SELECT a.id, descripcion, idCategoria, idAnunciante FROM Anuncios a, usuarios u, ubicaciones ub where a.idCategoria=? AND u.idUbicacion=ub.id AND ub.idPadre=? AND a.idAnunciante=u.id ORDER BY a.fechaDeAlta";
+					sql= "SELECT a.id, descripcion, idCategoria, idAnunciante FROM Anuncios a, usuarios u, ubicaciones ub where a.idCategoria=? AND u.idUbicacion=ub.id AND ub.idPadre=? AND a.idAnunciante=u.id AND a.descripcion LIKE ? ORDER BY a.fechaDeAlta";
 					p = bd.prepareStatement(sql);
 					p.setInt(1, categoria);
 					p.setInt(2, provincia);
 				}else if(orden == 2){
-					sql= "SELECT a.id, descripcion, idCategoria, idAnunciante FROM Anuncios a, usuarios u, ubicaciones ub where a.idCategoria=? AND u.idUbicacion=ub.id AND ub.idPadre=? AND a.idAnunciante=u.id ORDER BY a.fechaDeAlta DESC";
+					sql= "SELECT a.id, descripcion, idCategoria, idAnunciante FROM Anuncios a, usuarios u, ubicaciones ub where a.idCategoria=? AND u.idUbicacion=ub.id AND ub.idPadre=? AND a.idAnunciante=u.id AND a.descripcion LIKE ? ORDER BY a.fechaDeAlta DESC";
 					p = bd.prepareStatement(sql);
 					p.setInt(1, categoria);
 					p.setInt(2, provincia);
