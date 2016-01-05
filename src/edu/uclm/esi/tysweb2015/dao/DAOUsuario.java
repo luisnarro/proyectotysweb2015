@@ -138,6 +138,7 @@ public class DAOUsuario {
 			boolean r = rs.next();
 			if (r){
 				result = true;
+				usuario.setIdUsuario(rs.getInt(1));
 				usuario.setTipoDeOAuth(rs.getInt(2));
 			}
 			

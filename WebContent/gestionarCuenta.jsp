@@ -8,6 +8,7 @@
 	
 	if (usuario.getApellido1() != null && (usuario.getTipoDeOAuth() == 1)){
 		jso.put("resultado", "OK");
+		jso.put("tipo", "usuarioNormal");
 		jso.put("idUsuario", usuario.getIdUusuario());
 		jso.put("nombre", usuario.getNombre());
 		jso.put("apellido1", usuario.getApellido1());
@@ -17,8 +18,11 @@
 		jso.put("anuncios", usuario.getAnuncios());
 	}else{
 		if (usuario.getTipoDeOAuth() > 1){
-			jso.put("resultado", "Advertencia");
-			jso.put("tipo", "Información del usuario de Google+ no disponible");
+			jso.put("resultado", "OK");
+			jso.put("tipo", "usuarioGoogle");
+			jso.put("info", "La información de los usuarios de Google+ no está disponible.");
+			jso.put("idUsuario", usuario.getIdUusuario());
+			jso.put("anuncios", usuario.getAnuncios());
 		}else{
 			jso.put("resultado", "Error");
 			jso.put("tipo", "");

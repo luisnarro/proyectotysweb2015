@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta name="google-signin-client_id" content="353845812738-6tjfl6b6crcuri7mrfqugb4dte5gbsnb.apps.googleusercontent.com">
+<script src="https://apis.google.com/js/platform.js" async defer></script>
 <meta charset="UTF-8">
 <script src="https://apis.google.com/js/client:plusone.js"></script >
 <title>Publianuncios</title>
@@ -123,14 +125,14 @@
 										<input  type="password"  id="password" placeholder="Password" size="30" maxlength="40">
 									</div>
 									<div class="checkbox">
-										<label><input type="checkbox"> ?Recordarme?</label>
+										<label><input type="checkbox"> Recordarme</label>
 									</div>
 									<button type="button" class="btn btn-primary" onclick="identificar()">Login</button>
-									<a id="recordarPwd" href="javascript:recordarPassword()">?Olvid? la contrase?a!</a>
+									<a id="recordarPwd" href="javascript:recordarPassword()">¡Olvidé la contraseña!</a>
 									<p>
 										<div class="g-signin2" data-onsuccess="onSignIn"></div>
 									
-									<button type="submit" class="btn btn-block btn-social btn-google-plus" onclick="GoogleLogin()"><i class="fa fa-google-plus"></i> Sign in with Google</button>		
+											
 								</form>
 							</li>
 							
@@ -405,6 +407,44 @@
 		};
 		request.send(parm);
 	}
+	
+	//AutenticacionConGoogle
+	function onSignIn(googleUser) {
+		var profile = googleUser.getBasicProfile();
+		console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+		console.log('Name: ' + profile.getName());
+		console.log('Image URL: ' + profile.getImageUrl());
+		console.log('Email: ' + profile.getEmail());
+		registrarUsuarioGoogle(profile.getEmail());
+	}
+
+	function registrarUsuarioGoogle(email){
+		var req = new XMLHttpRequest();
+		req.open("POST", "RegistrarUsuarioGoogle.action")
+		req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		req.onreadystatechange=function(){
+			if (req.readyState==4) {
+				if (req.status==200){
+					var respuesta = JSON.parse(req.responseText);
+					respuesta = JSON.parse(respuesta.resultado);
+					if (respuesta.resultado=="OK"){
+						var usuario = respuesta.usuario;
+						sessionStorage.setItem("email", usuario);
+						$('#navbarLogin').load('FormDPSesion.html');
+						location.reload();
+					} else {
+						alert(respuesta.resultado);
+					}
+				}else {
+					alert("Error. "+ request.statusText);
+				}
+			}
+		};
+		var pars = "email="+email;
+		req.send(pars);
+	}
+	
+	
 	function cargarProvincias() {
 		var request = new XMLHttpRequest();
 		request.open("POST", "cargarProvincias.jsp")

@@ -44,14 +44,18 @@ function cargarDatosPersonales(){
 				var respuesta = req.responseText;
 				respuesta = JSON.parse(respuesta);
 				if (respuesta.resultado=="OK"){
-					//Poner la información del usuario en los cuadros de texto
-					document.getElementById("useremail").value = respuesta.email;
-					document.getElementById("nombre").value = respuesta.nombre;
-					document.getElementById("apellido1").value = respuesta.apellido1;
-					document.getElementById("apellido2").value = respuesta.apellido2;
-					document.getElementById("telefono").value = respuesta.telefono;
-					var idUsuario = respuesta.idUsuario;
+					if(respuesta.tipo=="usuarioNormal"){
+						//Poner la información del usuario en los cuadros de texto
+						document.getElementById("useremail").value = respuesta.email;
+						document.getElementById("nombre").value = respuesta.nombre;
+						document.getElementById("apellido1").value = respuesta.apellido1;
+						document.getElementById("apellido2").value = respuesta.apellido2;
+						document.getElementById("telefono").value = respuesta.telefono;
+					}else if(respuesta.tipo=="usuarioGoogle"){
+						alert(respuesta.info);
+					}
 					
+					var idUsuario = respuesta.idUsuario;
 					var anuncios = respuesta.anuncios;
 					var areaAnuncios = document.getElementById("areaAnunciosUsuario");
 					var tabla=document.createElement("table");

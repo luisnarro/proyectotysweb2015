@@ -147,6 +147,7 @@ public class Usuario {
 		if(DAOUsuario.existeUsuarioGoogle(this)){
 			result = this;
 		}
+		recuperarAnuncios();
 		return result;
 	}
 
