@@ -133,20 +133,24 @@ public class DAOAnuncio {
 					sql= "SELECT a.id, descripcion, idCategoria, idAnunciante FROM Anuncios a, usuarios u, ubicaciones ub where a.idCategoria=? AND u.idUbicacion=ub.id AND a.idAnunciante=u.id AND a.descripcion LIKE ? ORDER BY a.fechaDeAlta";
 					p = bd.prepareStatement(sql);
 					p.setInt(1, categoria);
+					p.setString(2, "%" + palabras + "%");
 				}else if(orden == 2){
 					sql= "SELECT a.id, descripcion, idCategoria, idAnunciante FROM Anuncios a, usuarios u, ubicaciones ub where a.idCategoria=? AND u.idUbicacion=ub.id AND a.idAnunciante=u.id AND a.descripcion LIKE ? ORDER BY a.fechaDeAlta DESC";
 					p = bd.prepareStatement(sql);
 					p.setInt(1, categoria);
+					p.setString(2, "%" + palabras + "%");
 				}
 			}else if(categoria==0 && provincia>0){
 				if(orden == 1){
 					sql= "SELECT a.id, descripcion, idCategoria, idAnunciante FROM Anuncios a, usuarios u, ubicaciones ub where u.idUbicacion=ub.id AND ub.idPadre=? AND a.idAnunciante=u.id AND a.descripcion LIKE ? ORDER BY a.fechaDeAlta";
 					p = bd.prepareStatement(sql);
-					p.setInt(2, provincia);
+					p.setInt(1, provincia);
+					p.setString(2, "%" + palabras + "%");
 				}else if(orden == 2){
 					sql= "SELECT a.id, descripcion, idCategoria, idAnunciante FROM Anuncios a, usuarios u, ubicaciones ub where u.idUbicacion=ub.id AND ub.idPadre=? AND a.idAnunciante=u.id AND a.descripcion LIKE ? ORDER BY a.fechaDeAlta DESC";
 					p = bd.prepareStatement(sql);
-					p.setInt(2, provincia);
+					p.setInt(1, provincia);
+					p.setString(2, "%" + palabras + "%");
 				}
 			}else{
 				if(orden == 1){
@@ -154,11 +158,13 @@ public class DAOAnuncio {
 					p = bd.prepareStatement(sql);
 					p.setInt(1, categoria);
 					p.setInt(2, provincia);
+					p.setString(3, "%" + palabras + "%");
 				}else if(orden == 2){
 					sql= "SELECT a.id, descripcion, idCategoria, idAnunciante FROM Anuncios a, usuarios u, ubicaciones ub where a.idCategoria=? AND u.idUbicacion=ub.id AND ub.idPadre=? AND a.idAnunciante=u.id AND a.descripcion LIKE ? ORDER BY a.fechaDeAlta DESC";
 					p = bd.prepareStatement(sql);
 					p.setInt(1, categoria);
 					p.setInt(2, provincia);
+					p.setString(3, "%" + palabras + "%");
 				}
 			}
 			ResultSet rs = p.executeQuery();

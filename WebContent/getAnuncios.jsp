@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="application/json; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<%@ page import="edu.uclm.esi.tysweb2015.dao.*,java.sql.*, org.json.*" %>
+<%@ page import="edu.uclm.esi.tysweb2015.dao.*,java.sql.*, org.json.*, edu.uclm.esi.tysweb2015.dominio.*" %>
 
 <%
 
@@ -14,9 +14,12 @@ ps.setInt(1, idCategoria);
 JSONArray jsa=new JSONArray();
 ResultSet rs=ps.executeQuery();
 while (rs.next()) {
+	Anuncio anuncio = new Anuncio(rs.getInt(1), rs.getString(2));
+	anuncio.recuperarFotos();
 	JSONObject jso = new JSONObject();
 	jso.put("id", rs.getInt(1));
 	jso.put("descripcion", rs.getString(2));
+	jso.put("foto", anuncio.getFirstFoto());
 	jsa.put(jso);	
 }
 db.close();

@@ -222,42 +222,6 @@
 	    </div>
 	</footer>
 	
-	<!--<table border="1">
-		 <tr class="celdaRoja">
-			<td>
-				<span id="areaEmpresa">Publianuncios.com</span>
-			</td>
-			<td>
-				<span id="areaBusqueda">Área de búsqueda</span>
-			</td>
-			<td colspan="2">
-				<span id="datosPersonales">Datos</span>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<span id="areaArbol"></span>
-			</td>
-			<td colspan="3">
-				<span id="areaPrincipal">Esta es el área principal</span>
-			</td>
-		</tr> 
-		<tr class="celdaRoja"	>
-			<td>
-				<span id="areaTerminosDeUso">Terminos de uso</span>
-			</td>
-			<td>
-				<span id="areaCookies">Política de cookies</span>
-			</td>
-			<td>
-				<span id="areaQuienesSomos">Quienes Somos</span>
-			</td>
-			<td>
-				<span id="area">Área</span>
-			</td>
-		</tr>
-	</table> -->
-	
 	 <!-- Latest compiled and minified JavaScript -->
 	<script src="http://code.jquery.com/jquery-latest.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
@@ -296,7 +260,12 @@
 						for (var i=0; i<anunciosrecibidos.length; i++){
 							var id=anunciosrecibidos[i].id;
 							var descripcion=anunciosrecibidos[i].descripcion;
-							var anuncio = new Anuncio(id, descripcion);
+							var foto=anunciosrecibidos[i].foto;
+							if(foto!=null){
+								var anuncio = new Anuncio(id, descripcion, foto);
+							}else{
+								var anuncio = new Anuncio(id, descripcion, "noFoto.jpg");
+							}
 							anuncios.push(anuncio);
 						}
 						mostrarAnuncios();
@@ -562,7 +531,13 @@
 					for (var i=0; i<anunciosrecibidos.length; i++){
 						var id=anunciosrecibidos[i].id;
 						var descripcion=anunciosrecibidos[i].descripcion;
-						var anuncio = new Anuncio(id, descripcion);
+						var foto=anunciosrecibidos[i].foto;
+						if(foto!=null){
+							var anuncio = new Anuncio(id, descripcion, foto);
+						}else{
+							var anuncio = new Anuncio(id, descripcion, "noFoto.jpg");
+						}
+						
 						anuncios.push(anuncio);
 					}
 					mostrarAnuncios();
@@ -604,20 +579,90 @@
 	}
 	
 	// Definición de la clase "Anuncio" en javascript.
-	function Anuncio(id, descripcion){
+	function Anuncio(id, descripcion, foto){
 		this.id = id;
 		this.descripcion = descripcion;
-		this.fotos=[];
+		this.foto = foto;
 	}
 	// Definición del método "getWidget" para la clase "Anuncio" en javascript.
 	Anuncio.prototype.getWidget = function(){
+		var img = document.createElement("img");
+		img.setAttribute("alt", "FotoAnuncio");
+		img.setAttribute("src", "images\\"+this.foto);
+		img.setAttribute("style", "width:100px;height:100px;");
+		
 		var result = document.createElement("span");
 		result.setAttribute("id", "anuncio" + this.id);
 		result.setAttribute("class", "spanAnuncio");
-		var etiquetaDescripcion=document.createElement("label");
+		var etiquetaDescripcion=document.createElement("a");
+		etiquetaDescripcion.setAttribute("href", "javascript:cargarVistaAnuncio("+ this.id+")");
 		etiquetaDescripcion.innerHTML=this.descripcion;
+		result.appendChild(img);
 		result.appendChild(etiquetaDescripcion);
 		return result;
+	}
+	
+	function cargarVistaAnuncio(idAnuncio){
+		//Recuperar la información y fotos del anuncio y mostrarla.
+		var areaPrincipal=document.getElementById("areaPrincipal");
+		areaPrincipal.innerHTML="";
+		var request = new XMLHttpRequest();
+		request.open("POST", "getDatosAnuncio.jsp");
+		request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		request.onreadystatechange=function(){
+			if (request.readyState==4){
+				if (request.status==200) {
+					var anuncio = JSON.parse(request.responseText);
+					var span = document.createElement("span");
+					var titulo = document.createElement("h2");
+					titulo.innerHTML="Anuncio de usuario";
+					var usuario = document.createElement("label");
+					usuario.innerHTML="El anunciante es "+anuncio.nombreAnunciante;
+					var descripcion = document.createElement("h3");
+					descripcion.innerHTML=anuncio.descripcion;
+					var tituloFotos = document.createElement("h2");
+					tituloFotos.innerHTML="Fotos";
+					span.appendChild(titulo);
+					span.appendChild(usuario);
+					span.appendChild(descripcion);
+					
+					var numFotos = anuncio.fotos.length;
+					if (numFotos > 0){
+						span.appendChild(tituloFotos);
+						var tabla=document.createElement("table");
+						span.appendChild(tabla);
+						var cols=3;
+						var filas=numFotos/cols;
+						var cont=0;
+						for(var i=0; i<filas; i++){
+							var fila=document.createElement("tr");
+							tabla.appendChild(fila);
+							for(var j=0; j<cols; j++){
+								var celda=document.createElement("td");
+								fila.appendChild(celda);
+								if (cont<numFotos){
+									var img = document.createElement("img");
+									img.setAttribute("alt", "FotoAnuncio");
+									img.setAttribute("src", "images\\"+anuncio.fotos[cont].foto);
+									img.setAttribute("style", "width:100px;height:100px;");
+									celda.appendChild(img);
+									cont++;
+								}
+							}
+						}
+					}
+					
+					
+					areaPrincipal.appendChild(span);
+				}else{
+					alert("Error. "+request.statusText);
+				}
+			}
+		};
+		var par="idAnuncio=" + idAnuncio;
+		request.send(par);
+		
+		
 	}
 	</script>
 </body>

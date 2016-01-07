@@ -40,11 +40,13 @@ public class Buscar extends ActionSupport{
 			
 			JSONArray anunciosJSA = new JSONArray();
 			for (Anuncio anuncio : this.anuncios){
+				anuncio.recuperarFotos();
 				JSONObject jso = new JSONObject();
 				jso.put("id", anuncio.getIdAnuncio());
 				jso.put("descripcion", anuncio.getDescripcion());
 				jso.put("idCat", anuncio.getIdCategoria());
 				jso.put("idAnunciante", anuncio.getIdAnunciante());
+				jso.put("foto", anuncio.getFirstFoto());
 				anunciosJSA.put(jso);
 			}
 			result.put("anuncios", anunciosJSA);

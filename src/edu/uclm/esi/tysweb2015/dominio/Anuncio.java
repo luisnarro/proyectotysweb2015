@@ -3,6 +3,8 @@ package edu.uclm.esi.tysweb2015.dominio;
 import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Enumeration;
 import java.util.Hashtable;
 
 import edu.uclm.esi.tysweb2015.dao.DAOAnuncio;
@@ -71,6 +73,16 @@ public class Anuncio {
 	}
 	public Hashtable<String, String> getFotos() {
 		return fotos;
+	}
+	public String getFirstFoto(){
+		String result = null;
+		Boolean bo = true;
+		Enumeration<String> ides = this.fotos.keys();
+		while (ides.hasMoreElements() && bo){
+			result = this.fotos.get(ides.nextElement());
+			bo = false;
+		}
+		return result;
 	}
 	public void addFotoAlArray(String key, String value){
 		this.fotos.put(key, value);
