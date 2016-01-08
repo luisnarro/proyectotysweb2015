@@ -53,7 +53,14 @@
 			<result name="error" type="json"></result>
 			<result name="input" type="json"></result>
 		</action>
+		
 		<action name="Buscar" class="edu.uclm.esi.tysweb2015.acciones.Buscar">
+			<result name="success" type="json"></result>
+			<result name="error" type="json"></result>
+			<result name="input" type="json"></result>
+		</action>
+		
+		<action name="AddListaDeseos" class="edu.uclm.esi.tysweb2015.acciones.AddListaDeseos">
 			<result name="success" type="json"></result>
 			<result name="error" type="json"></result>
 			<result name="input" type="json"></result>

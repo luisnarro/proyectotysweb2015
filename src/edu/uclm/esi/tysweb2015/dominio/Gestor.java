@@ -86,4 +86,14 @@ public class Gestor {
 		return anuncioBuscar.buscarAnuncios(palabras, categoria, provincia, orden);
 	}
 
+	public boolean comprobarListaDeseos(String usuario, int idAnuncio) throws SQLException, Exception {
+		Deseo deseo = new Deseo(usuario, idAnuncio);
+		return deseo.comprobarExiste();
+	}
+
+	public void addListaDeseos(String usuario, int anuncio) throws SQLException, Exception {
+		Deseo deseo = new Deseo(usuario, anuncio);
+		deseo.insertar();
+	}
+
 }
