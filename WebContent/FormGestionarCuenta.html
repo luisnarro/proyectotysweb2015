@@ -17,6 +17,7 @@
 	<p>
 		<h2>Lista de deseos</h2>
 	</p>
+	<span id="areaDeseosUsuario"></span>
 </div>
 
 <div id="datosAnuncio" style="display: none">
@@ -60,11 +61,16 @@ function cargarDatosPersonales(){
 					
 					var idUsuario = respuesta.idUsuario;
 					var anuncios = respuesta.anuncios;
+					var deseos = respuesta.deseos;
 					var areaAnuncios = document.getElementById("areaAnunciosUsuario");
+					var areaDeseos = document.getElementById("areaDeseosUsuario");
 					var tabla=document.createElement("table");
+					var tablaDeseos=document.createElement("table");
 					areaAnuncios.appendChild(tabla);
+					areaDeseos.appendChild(tablaDeseos);
 					var cols=3;
 					var filas=anuncios.length/cols;
+					var filasDeseos=deseos.length/cols;
 					var cont=0;
 					
 					for(var i=0; i<filas; i++){
@@ -81,6 +87,29 @@ function cargarDatosPersonales(){
 								var enlace=document.createElement("a");
 								enlace.setAttribute("href", "javascript:cargarGestionAnuncio("+anuncioID+","+idUsuario+")");
 								enlace.innerHTML=anuncios[cont].descripcion;
+								//var etiquetaDescripcion=document.createElement("label");
+								//etiquetaDescripcion.innerHTML=anuncios[cont].descripcion;
+								span.appendChild(enlace);
+								celda.appendChild(span);
+								cont++;
+							}
+						}
+					}
+					cont=0;
+					for(var i=0; i<filasDeseos; i++){
+						var fila=document.createElement("tr");
+						tablaDeseos.appendChild(fila);
+						for(var j=0; j<cols; j++){
+							var celda=document.createElement("td");
+							fila.appendChild(celda);
+							if (cont<deseos.length){
+								var span = document.createElement("span");
+								var anuncioID = deseos[cont].idAnuncio;
+								span.setAttribute("id", anuncioID);
+								span.setAttribute("class", "spanDeseo");
+								var enlace=document.createElement("a");
+								enlace.setAttribute("href", "javascript:cargarVistaAnuncio("+anuncioID+")");
+								enlace.innerHTML=deseos[cont].descripcion;
 								//var etiquetaDescripcion=document.createElement("label");
 								//etiquetaDescripcion.innerHTML=anuncios[cont].descripcion;
 								span.appendChild(enlace);

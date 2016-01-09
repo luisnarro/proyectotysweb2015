@@ -107,7 +107,7 @@ public class DAORecordar {
 	}
 
 	public static void eliminarToken(String token) throws SQLException, Exception {
-		Connection db=Broker.get().getConnectionDelete();
+		Conexion db=Broker.get().getConnectionDelete();
 
 		try{
 			String SQL ="delete from recuperar where token=?";

@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import edu.uclm.esi.tysweb2015.dominio.Anuncio;
+import edu.uclm.esi.tysweb2015.dominio.Deseo;
 import edu.uclm.esi.tysweb2015.dominio.Usuario;
 
 public class DAOUsuario {
@@ -150,5 +151,28 @@ public class DAOUsuario {
 			bd.close();
 		}
 		return result;
+	}
+
+	public static void recuperarDeseos(Usuario usuario) throws SQLException, Exception {
+		Conexion bd = Broker.get().getConnectionSeleccion();
+		try{
+			String sql= "SELECT l.idAnuncio, a.descripcion FROM Anuncios a, listadeseos l where l.idUsuario=? AND l.idAnuncio=a.id";
+			PreparedStatement p = bd.prepareStatement(sql);
+			p.setInt(1, usuario.getIdUusuario());
+			ResultSet rs = p.executeQuery();
+				while(rs.next()) {
+					int idAnuncio = rs.getInt(1);
+					String descripcion = rs.getString(2);
+					Deseo deseo = new Deseo(usuario.getIdUusuario(), idAnuncio);
+					deseo.setDescripcion(descripcion);
+					usuario.addDeseo(deseo);
+				}
+		}
+		catch(Exception e){
+			throw e;
+		}
+		finally{
+			bd.close();
+		}
 	}
 }

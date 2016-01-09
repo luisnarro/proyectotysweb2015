@@ -70,4 +70,22 @@ public class DAODeseo {
 		return result;
 	}
 
+	public static void eliminar(Deseo deseo) throws SQLException, Exception {
+		int id = getIdUsuario(deseo.getUsuario());
+		Conexion bd = Broker.get().getConnectionDelete();
+		try{
+			String sql= "DELETE FROM listadeseos where idUsuario=? AND idAnuncio=?";
+			PreparedStatement p = bd.prepareStatement(sql);
+			p.setInt(1, id);
+			p.setInt(2, deseo.getIdAnuncio());
+			p.execute();
+		}
+		catch(Exception e){
+			throw e;
+		}
+		finally{
+			bd.close();
+		}
+	}
+
 }

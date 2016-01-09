@@ -96,4 +96,9 @@ public class Gestor {
 		deseo.insertar();
 	}
 
+	public void eliminarDeseo(String usuario, int anuncio) throws SQLException, Exception {
+		Deseo deseo = new Deseo(usuario, anuncio);
+		deseo.eliminar();
+	}
+
 }

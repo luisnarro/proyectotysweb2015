@@ -15,7 +15,7 @@ public class Broker {
 	private Broker() throws SQLException{
 		try{
 			Class.forName("com.mysql.jdbc.Driver");
-			this.pool=new Pool(20, 10);
+			this.pool=new Pool(20, 10, 5);
 			url="jdbc:mysql://localhost:3306/tysweb2015?noAccessToProcedureBodies=true";
 		}catch (ClassNotFoundException e){
 			System.out.println(e.toString());
@@ -39,8 +39,9 @@ public class Broker {
 		return this.pool.getConexionInsercion();
 	}
 	
-	public Connection getConnectionDelete() throws SQLException {
-		return DriverManager.getConnection(url, "deleteTyS2015", "deleteTyS2015");
+	public Conexion getConnectionDelete() throws SQLException {
+		//return DriverManager.getConnection(url, "deleteTyS2015", "deleteTyS2015");
+		return this.pool.getConexionDelete();
 	}
 
 	public Connection getConnection(String userName, String pwd) throws SQLException {

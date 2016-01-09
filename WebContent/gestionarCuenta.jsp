@@ -16,6 +16,7 @@
 		jso.put("telefono", usuario.getTelefono());
 		jso.put("email", usuario.getEmail());
 		jso.put("anuncios", usuario.getAnuncios());
+		jso.put("deseos", usuario.getDeseos());
 	}else{
 		if (usuario.getTipoDeOAuth() > 1){
 			jso.put("resultado", "OK");

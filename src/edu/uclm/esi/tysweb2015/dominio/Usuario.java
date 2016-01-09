@@ -19,6 +19,7 @@ public class Usuario {
 	//private Connection bd;
 	private int tipoDeOAuth;
 	private ArrayList<Anuncio> anuncios = new ArrayList<Anuncio>();
+	private ArrayList<Deseo> deseos = new ArrayList<Deseo>();
 	
 	public Usuario() {
 		
@@ -38,6 +39,7 @@ public class Usuario {
 	public Usuario(String email, String pwd) throws SQLException, Exception {
 		DAOUsuario.identificar(this, email, pwd);
 		recuperarAnuncios();
+		recuperarDeseos();
 	}
 
 	public Usuario(String email) {
@@ -51,6 +53,11 @@ public class Usuario {
 	
 	public void recuperarAnuncios() throws SQLException, Exception {
 		DAOUsuario.recuperarAnuncios(this);
+	}
+	
+	public void recuperarDeseos() throws SQLException, Exception {
+		this.deseos.clear();
+		DAOUsuario.recuperarDeseos(this);
 	}
 
 	public void setEmail(String email) {
@@ -136,6 +143,14 @@ public class Usuario {
 	 *	}
 	 */
 	
+
+	public ArrayList<Deseo> getDeseos() {
+		return deseos;
+	}
+
+	public void addDeseo(Deseo deseo) {
+		this.deseos.add(deseo);
+	}
 
 	public void setAnuncio(Anuncio anuncio){
 		Anuncio anuncioMin = new Anuncio(anuncio.getIdAnuncio(), anuncio.getDescripcion());

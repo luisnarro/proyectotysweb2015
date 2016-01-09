@@ -7,7 +7,7 @@ import com.opensymphony.xwork2.ActionSupport;
 import edu.uclm.esi.tysweb2015.dominio.Gestor;
 import edu.uclm.esi.tysweb2015.dominio.Usuario;
 
-public class AddListaDeseos extends ActionSupport{
+public class RemoveListaDeseos extends ActionSupport{
 	private static final long serialVersionUID = 1L;
 	private int anuncio;
 	private String usuario;
@@ -17,14 +17,13 @@ public class AddListaDeseos extends ActionSupport{
 		try {
 			Gestor gestor = Gestor.get();
 			if(gestor.comprobarListaDeseos(usuario, anuncio)){
-				this.resultado="Ya tienes este producto en tu lista de deseos.";
-			}else{
-				gestor.addListaDeseos(usuario, anuncio);
+				gestor.eliminarDeseo(usuario, anuncio);
 				Usuario usuario = (Usuario) ServletActionContext.getRequest().getSession().getAttribute("usuario");
 				usuario.recuperarDeseos();
-				this.resultado="Añadido a tu lista correctamente.";
+				this.resultado="Anuncio eliminado de la lista correctamente";
+			}else{
+				this.resultado="Error al eliminar el anuncio de la lista";
 			}
-			
 			return SUCCESS;
 		} catch (Exception e) {
 			this.resultado=e.getMessage();

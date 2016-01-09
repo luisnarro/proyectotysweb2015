@@ -653,6 +653,7 @@
 					}
 					var boton = document.createElement("button");
 					boton.setAttribute("onclick", "addListaDeseos("+idAnuncio+")");
+					boton.setAttribute("id", "botonListaDeseos");
 					boton.innerHTML="Añadir a la lista de deseos";
 					span.appendChild(boton);
 					
@@ -676,10 +677,14 @@
 				if (req.readyState==4) {
 					if (req.status==200){
 						var respuesta = JSON.parse(req.responseText);
-						
 						alert(respuesta.resultado);
+						//Cambiar el botón de añadir a la lista por el de quitar de la lista.
+						var boton = document.getElementById("botonListaDeseos");
+						boton.setAttribute("onclick", "removeListaDeseos("+idAnuncio+")");
+						boton.innerHTML="Quitar de la lista de deseos";
 					}else {
 						alert("Error. "+ request.statusText);
+						
 					}
 				}
 			};
@@ -689,6 +694,30 @@
 		}else{
 			alert("Debes identificarte para añadir a tu lista de deseos.");
 		}
+	}
+	
+	function removeListaDeseos(idAnuncio){
+		var req = new XMLHttpRequest();
+		req.open("POST", "RemoveListaDeseos.action")
+		req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		req.onreadystatechange=function(){
+			if (req.readyState==4) {
+				if (req.status==200){
+					var respuesta = JSON.parse(req.responseText);
+					alert(respuesta.resultado);
+					//Cambiar el botón.
+					var boton = document.getElementById("botonListaDeseos");
+					boton.setAttribute("onclick", "addListaDeseos("+idAnuncio+")");
+					boton.innerHTML="Añadir a la lista de deseos";
+				}else {
+					alert("Error. "+ request.statusText);
+					
+				}
+			}
+		};
+		var usuario = sessionStorage.getItem("email");
+		var pars = "anuncio="+idAnuncio+"&usuario="+usuario;
+		req.send(pars);
 	}
 	</script>
 </body>
