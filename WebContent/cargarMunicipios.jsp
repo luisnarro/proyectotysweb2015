@@ -21,5 +21,6 @@ while (rs.next()) {
 	jso.put("nombre", rs.getString(2));
 	jsa.put(jso);
 }
+db.close();
 %>
 <%= jsa.toString() %>

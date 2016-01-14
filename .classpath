@@ -18,5 +18,7 @@
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/google-http-client-1.10.3-beta.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/javax.mail.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/google-api-client-1.8.0-beta.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/selenium-java-2.48.2.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/selenium-server-standalone-2.48.2.jar"/>
 	<classpathentry kind="output" path="WebContent/WEB-INF/classes"/>
 </classpath>
