@@ -1,40 +1,20 @@
 package edu.uclm.esi.tysweb2015.dominio.test;
 
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.*;
-import org.junit.runner.*;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.*;
 
 import static org.junit.Assert.*;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.Select;
 
-@RunWith(Parameterized.class)
-public class Login {
-  private String emailLogin;
-  private String password;
+public class InsertarAnuncioSinFoto {
   private WebDriver driver;
   private String baseUrl;
   private boolean acceptNextAlert = true;
   private StringBuffer verificationErrors = new StringBuffer();
-  private String resultado;
-  
-  @Parameters
-  public static Collection<String[]> valores(){
-	  return Arrays.asList(new String[][] {{"luisnarrosanchez@gmail.com","pass","Login correcto"}, {"paco@paco.com","pass","Login correcto"},
-			  								{"usuarionoregistrado@gmail.com","pass","Error de autenticación"}});
-  }
-  
-  public Login(String email, String pass, String result){
-	  this.emailLogin = email;
-	  this.password = pass;
-	  this.resultado = result;
-  }
 
   @Before
   public void setUp() throws Exception {
@@ -44,27 +24,32 @@ public class Login {
   }
 
   @Test
-  public void testLogin() throws Exception {
+  public void testInsertarAnuncioSinFoto() throws Exception {
     driver.get(baseUrl + "/proyectoTySW/");
+    //Login
     driver.findElement(By.linkText("Login")).click();
     driver.findElement(By.id("logemail")).clear();
-    driver.findElement(By.id("logemail")).sendKeys(emailLogin);
+    driver.findElement(By.id("logemail")).sendKeys("luisnarrosanchez@gmail.com");
     driver.findElement(By.id("password")).clear();
-    driver.findElement(By.id("password")).sendKeys(password);
+    driver.findElement(By.id("password")).sendKeys("pass");
     driver.findElement(By.xpath("(//button[@type='button'])[2]")).click();
+    Thread.sleep(2000);
+    
+    //Insertar Anuncio
+    driver.findElement(By.id("nuevoAnuncio")).click();
+    Thread.sleep(1000);
+    driver.findElement(By.id("descripcion")).clear();
+    driver.findElement(By.id("descripcion")).sendKeys("AnuncioPrueba2");
+    new Select(driver.findElement(By.id("selectCategoria"))).selectByVisibleText("Hogar");
+    driver.findElement(By.id("publicar")).click();
+    Thread.sleep(1000);
     try{
-    	assertEquals(resultado, closeAlertAndGetItsText());
+    	assertEquals("OK: Anuncio publicado.", closeAlertAndGetItsText());
     }catch (Exception e){
     	verificationErrors.append(e.toString());
     }
-//    Thread.sleep(1000);
-//    driver.findElement(By.id("desconectar")).click();
-//    try {
-//    	String textoAlerta = closeAlertAndGetItsText();
-//        assertEquals("Usuario desconectado correctamente.", textoAlerta);
-//    }catch (Exception e) {
-//    	verificationErrors.append(e.toString());
-//	}
+    driver.findElement(By.id("desconectar")).click();
+    
   }
 
   @After
@@ -72,7 +57,7 @@ public class Login {
     driver.quit();
     String verificationErrorString = verificationErrors.toString();
     if (!"".equals(verificationErrorString)) {
-    	fail(verificationErrorString);
+      fail(verificationErrorString);
     }
   }
 

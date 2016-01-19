@@ -8,13 +8,18 @@ String sql ="select id, nombre from categorias order by nombre";
 
 PreparedStatement ps=db.prepareStatement(sql);
 JSONArray jsa=new JSONArray();
-ResultSet rs=ps.executeQuery();
-while (rs.next()) {
-	JSONObject jso = new JSONObject();
-	jso.put("id", rs.getInt(1));
-	jso.put("nombre", rs.getString(2));
-	jsa.put(jso);	
+try{
+	ResultSet rs=ps.executeQuery();
+	while (rs.next()) {
+		JSONObject jso = new JSONObject();
+		jso.put("id", rs.getInt(1));
+		jso.put("nombre", rs.getString(2));
+		jsa.put(jso);	
+	}
+} catch(Exception e){
+	throw e;
+}finally{
+	db.close();
 }
-db.close();
 %>
 <%= jsa.toString() %>

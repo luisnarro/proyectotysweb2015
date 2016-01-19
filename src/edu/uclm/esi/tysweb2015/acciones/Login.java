@@ -20,7 +20,7 @@ public class Login extends ActionSupport{
 			this.resultado="OK";
 			return SUCCESS;
 		} catch (Exception e) {
-			this.resultado=e.getMessage();
+			this.resultado="Error de autenticación";
 			return ERROR;
 		}
 	}

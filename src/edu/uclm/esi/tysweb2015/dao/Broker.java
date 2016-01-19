@@ -12,21 +12,22 @@ public class Broker {
 	//private String url="jdbc:mysql://alarcosj.esi.uclm.es:3306/tysweb2015?noAccessToProcedureBodies=true";
 	private String url;
 	
-	private Broker() throws SQLException{
-		try{
+	private Broker(){
+		try{	
 			Class.forName("com.mysql.jdbc.Driver");
-			this.pool=new Pool(20, 10, 5);
+			this.pool=new Pool(30, 30, 10);
 			url="jdbc:mysql://localhost:3306/tysweb2015?noAccessToProcedureBodies=true";
-		}catch (ClassNotFoundException e){
+		}catch (Exception e){
 			System.out.println(e.toString());
 		}
 	}
 	
+	private static class BrokerHolder{
+		private static Broker broker = new Broker();
+	}
+	
 	public static Broker get() throws Exception{
-		if(yo==null){
-			yo=new Broker();
-		}
-		return yo;
+		return BrokerHolder.broker;
 	}
 
 	public Conexion getConnectionSeleccion() throws SQLException {
