@@ -33,7 +33,11 @@
 
 <div id="areaFotos"></div>
 
-<button type="button" id="chatEnviar" onclick="enviarMensaje()">Chat</button><br>
+<button type="button" id="chatEnviar" onclick="cargarChat()">Chat</button><br>
+<form id="formChat" style="display:none;">
+	<textarea id="cajaTexto" rows="5" cols="20"></textarea></br>
+	<button id="chatEnviar" onclick="enviarMensaje()">Enviar</button>
+</form>
 <p><button type="submit" onclick="volver()">Volver</button></p>
 <script>
 var request = new XMLHttpRequest();
@@ -58,28 +62,34 @@ request.onreadystatechange=function(){
 request.send();
 
 // <CHAT>
-if (window.WebSocket==undefined) {
-	alert("Lo sentimos, pero tu navegador no soporta este tipo de comunicación");
-}
-var url="ws://" + window.location.hostname + ":" + window.location.port + "/proyectoTySW/servidorChat";
-chat=new WebSocket(url);
-chat.onopen = function() {
-	var name = '<%= session.getAttribute("usuario") %>';
-	var mensaje = {
-			tipo : "identificacion",
-			texto : "pepe@pepe.com"
-	};
-	chat.send(JSON.stringify(mensaje));
-}
-chat.onerror = function() {
-	alert("Se ha producido un error al cargar el Chat");
-}
-chat.onclose = function() {
-	alert("Websocket chat cerrado");
-}
-
-function enviarMensaje(){
-	chat.send("{Hola}");
+function cargarChat(){
+	if (window.WebSocket==undefined) {
+		alert("Lo sentimos, pero tu navegador no soporta este tipo de comunicación");
+	}
+	
+	var formChat=document.getElementById("formChat");
+	formChat.setAttribute("style", "display:block");
+	
+	var url="ws://" + window.location.hostname + ":" + window.location.port + "/proyectoTySW/servidorChat";
+	chat=new WebSocket(url);
+	chat.onopen = function() {
+		var mensaje={tipo: "identificacion",
+					texto: sessionStorage.getItem("email")};
+		chat.send(JSON.stringify(mensaje));
+	}
+	chat.onerror = function() {
+		alert("Se ha producido un error al cargar el Chat");
+	}
+	chat.onclose = function() {
+		var mensaje={tipo: "cierre",
+					texto: sessionStorage.getItem("email")};
+		chat.send(JSON.stringify(mensaje));
+		alert("Websocket chat cerrado");
+	}
+	
+	function enviarMensaje(){
+		chat.send("{Hola}");
+	}
 }
 // </CHAT>
 
