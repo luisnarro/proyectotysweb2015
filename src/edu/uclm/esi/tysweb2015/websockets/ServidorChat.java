@@ -37,6 +37,7 @@ public class ServidorChat {
 			}else if (jso.get("tipo").equals("mensajeUsuario")){
 				String mensaje = jso.getString("texto");
 				//Redirigir o almacenar el mensaje para que el usuario Administrador lo lea y conteste.
+				
 			}
 		}catch(JSONException e){
 			

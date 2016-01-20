@@ -45,7 +45,7 @@ public class DAOUsuario {
 			
 		}
 		catch(Exception e){
-			throw e;
+			throw new Exception("Usuario no válido.");
 		}
 		finally{
 			bd.close();
@@ -121,7 +121,7 @@ public class DAOUsuario {
 			//}
 		}
 		catch(Exception e){
-			throw e;
+			throw new Exception("No se han podido recuperar los anuncios.");
 		}
 		finally{
 			bd.close();
@@ -145,7 +145,7 @@ public class DAOUsuario {
 			
 		}
 		catch(Exception e){
-			throw e;
+			throw new Exception("No se ha podido comprobar el Usuario.");
 		}
 		finally{
 			bd.close();
@@ -169,7 +169,7 @@ public class DAOUsuario {
 				}
 		}
 		catch(Exception e){
-			throw e;
+			throw new Exception("No se ha podido recuperar la lista de deseos.");
 		}
 		finally{
 			bd.close();

@@ -86,9 +86,15 @@ function cargarChat(){
 		chat.send(JSON.stringify(mensaje));
 		alert("Websocket chat cerrado");
 	}
-	
-	function enviarMensaje(){
-		chat.send("{Hola}");
+}
+function enviarMensaje(){
+	var texto=document.getElementById("cajaTexto").value;
+	if(texto != ""){
+		var mensaje={tipo: "mensajeUsuario",
+		          remitente: sessionStorage.getItem("email"),
+		          texto: texto};
+		chat.send(JSON.stringify(mensaje));
+		texto="";
 	}
 }
 // </CHAT>

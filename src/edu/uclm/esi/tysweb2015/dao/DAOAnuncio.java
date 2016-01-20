@@ -29,7 +29,7 @@ public class DAOAnuncio {
 			anuncio.setFechaAlta(cs.getInt(5));
 		}
 		catch(Exception e){
-			throw e;
+			throw new SQLException("Error al insertar anuncio.");
 		}
 		finally{
 			bd.close();
@@ -52,7 +52,7 @@ public class DAOAnuncio {
 			return exito;
 		}
 		catch(Exception e){
-			throw e;
+			throw new SQLException("Error al insertar la foto.");
 		}
 		finally{
 			bd.close();
@@ -77,7 +77,7 @@ public class DAOAnuncio {
 			}
 		}
 		catch(Exception e){
-			throw e;
+			throw new SQLException("No se ha podido recuperar el anuncio.");
 		}
 		finally{
 			bd.close();
@@ -103,7 +103,7 @@ public class DAOAnuncio {
 			}
 		}
 		catch(Exception e){
-			throw e;
+			throw new SQLException("No se han podido recuperar las fotos de este anuncio.");
 		}
 		finally{
 			bd.close();
@@ -180,7 +180,7 @@ public class DAOAnuncio {
 			}
 		}
 		catch(Exception e){
-			throw e;
+			throw new SQLException("Error en los parámetros de la búsqueda.");
 		}
 		finally{
 			bd.close();

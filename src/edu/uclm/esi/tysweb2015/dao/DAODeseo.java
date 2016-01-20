@@ -23,7 +23,7 @@ public class DAODeseo {
 			}
 		}
 		catch(Exception e){
-			throw e;
+			throw new Exception("No se ha podido comprobar este anuncio de la lista.");
 		}
 		finally{
 			bd.close();
@@ -42,7 +42,7 @@ public class DAODeseo {
 			cs.executeUpdate();
 		}
 		catch(Exception e){
-			throw e;
+			throw new Exception("Error al guardar el anuncio en la lista.");
 		}
 		finally{
 			bd.close();
@@ -62,7 +62,7 @@ public class DAODeseo {
 			}
 		}
 		catch(Exception e){
-			throw e;
+			throw new Exception("Usuario no válido.");
 		}
 		finally{
 			bd.close();
@@ -81,7 +81,7 @@ public class DAODeseo {
 			p.execute();
 		}
 		catch(Exception e){
-			throw e;
+			throw new Exception("No se ha podido eliminar este anuncio de la lista.");
 		}
 		finally{
 			bd.close();

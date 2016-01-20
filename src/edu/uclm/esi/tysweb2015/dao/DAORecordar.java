@@ -116,7 +116,7 @@ public class DAORecordar {
 			p.execute();
 		}
 		catch (SQLException e){
-			throw e;
+			throw new Exception("Error al eliminar el token.");
 		}
 		finally{
 			db.close();
@@ -134,7 +134,7 @@ public class DAORecordar {
 			p.execute();
 		}
 		catch (SQLException e){
-			throw e;
+			throw new Exception("No se ha podido actualizar la contraseña.");
 		}
 		finally{
 			db.close();
